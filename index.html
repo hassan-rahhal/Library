@@ -3,11 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Book Library</title>
     <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-
+    <header class="mainHeader">
+        <div class="wrap headerFlex">
+            <div class="logoBox">
+                <div class="logoTag">BOOK</div>
+                <span class="logoName">Library</span>
+            </div>
+        <nav class="navBar">
+            <a href="#" class="navItem">Home</a>
+            <a href="#" class="navItem">Shop</a>
+            <a href="#" class="navItem">Products</a>
+            <a href="#" class="navItem">Blog</a>
+            <a href="#" class="navItem">About</a>
+            <a href="#" class="navItem">Contact</a>
+        </nav>
+        <div class="headerBtns">
+            <button class="btnIcon">🔍</button>
+            <button class="btnIcon">🛒</button>
+            <button class="btnIcon">👤</button>
+        </div>
+        </div>
+    </header>
+    <main>
+    <section class="heroSection">
+    <div class="wrap heroLayout">
+        <div class="heroText">
+        <p class="tagLine">Boighor<span class="tagUnderscore">_</span></p>
+        <h1 class="heroHeading">
+            The Best <span class="highlight">Online</span><br />
+            Book <span class="highlight">Shop</span>
+        </h1>
+        <p class="heroInfo">
+            Carefully selected books for readers and writers. Find your next favorite title or publish your own.
+        </p>
+        <div class="heroBtns">
+            <a href="#" class="mainBtn">Shop Now</a>
+            <a href="#" class="ghostBtn">Learn More →</a>
+        </div>
+        </div>
+        <div class="heroPic">
+        <img src="images/hero-books.jpg" alt="Stack of books">
+        </div>
+    </div>
+    </section>
+    <section class="booksSection">
+        <div class="wrap">
+            <header class="sectionHead">
+            <h2>New <span class="highlight">Books</span></h2>
+            <p class="sectionNote">Handpicked titles and new arrivals. Browse by genre, year, or popularity.</p>
+            </header>
+        <div class="bookList">
+            <article class="bookCard">
+                <div class="bookTag">17% OFF</div>
+                <img class="bookCover" src="images/sample1.jpg" alt="Book A">
+                <div class="bookInfo">
+                    <h3 class="bookName">Blue in the Night</h3>
+                    <p class="bookAuthor">by J. Doe · 2021</p>
+                </div>
+            </article>
+            <article class="bookCard">
+                <div class="bookTag">4.5/5</div>
+                <img class="bookCover" src="images/sample2.jpg" alt="Book B">
+                <div class="bookInfo">
+                    <h3 class="bookName">Twent Moments</h3>
+                    <p class="bookAuthor">by A. Smith · 2020</p>
+                </div>
+            </article>
+            <article class="bookCard">
+                <div class="bookTag">New</div>
+                <img class="bookCover" src="images/sample3.jpg" alt="Book C">
+                <div class="bookInfo">
+                    <h3 class="bookName">Memories of Home</h3>
+                    <p class="bookAuthor">by L. Nguyen · 2019</p>
+                </div>
+            </article>
+            <article class="bookCard">
+                <div class="bookTag">Top</div>
+                <img class="bookCover" src="images/sample4.jpg" alt="Book D">
+                <div class="bookInfo">
+                    <h3 class="bookName">Olio</h3>
+                    <p class="bookAuthor">by R. Patel · 2022</p>
+                </div>
+            </article>
+        </div>
+        </div>
+</section>
+</main>
+    <footer class="mainFooter">
+        <div class="wrap footerFlex">
+            <p>© <span id="year"></span> Book Library. All rights reserved.</p>
+            <nav class="footerNav">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Help</a>
+            </nav>
+        </div>
+    </footer>
     <script src="index.js"></script>
 </body>
 </html>
