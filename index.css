@@ -8,13 +8,14 @@
     --radius: 12px;
     --shadow: 0 6px 20px rgba(31,31,31,0.06);
     font-size: 16px;
+    font-family: "Montserrat", sans-serif;
 }
 *  { 
     box-sizing: border-box;
     }
 body {
     margin: 0;
-    font-family: "Montserrat", sans-serif;
+    
     color: var(--text);
     background: var(--bg);
     line-height: 1.5;
@@ -41,7 +42,9 @@ body {
   align-items: center;
   padding: 15px 40px;
 }
-
+button{
+  font-family: "Montserrat", sans-serif;
+}
 .logoBox {
   display: flex;
   align-items: center;
@@ -70,7 +73,9 @@ body {
   font-weight: 500;
   transition: 0.3s;
 }
-
+a{
+  cursor: pointer;
+}
 .navItem:hover {
   color: #e05649;
 }
@@ -92,14 +97,10 @@ body {
   width: 200px;
 }
 
-
-
-/* Buttons */
 .btnNav {
   background-color: #f08a80;
   border: none;
   color: #fff;
-  font-weight: 600;
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
@@ -112,7 +113,7 @@ body {
 
 .heroSection {
     background: var(--light);
-    padding: 60px 0;
+    padding: 105px 0;
 }
 .heroLayout {
     display: grid;
@@ -430,7 +431,6 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: bold;
   transition: 0.3s;
 }
 
