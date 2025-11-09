@@ -511,7 +511,7 @@ a{
 }
 
 .addToCartBtn {
-  background: var(--accent);
+  background: #e27268;
   color: #fff;
   border: none;
   padding: 10px 16px;
@@ -521,7 +521,7 @@ a{
   transition: 0.2s;
 }
 .addToCartBtn:hover {
-  background: #e27268;
+  background: #e05649;
 }
 
 .productMeta p {
@@ -551,9 +551,11 @@ a{
 
 .loginBox {
   background: #fff;
+  margin-top: 40px;
   box-shadow: var(--shadow);
-  border-radius: var(--card-radius);
-  padding: 40px 32px;
+  border: 2px solid #e05649;
+  border-radius: 20px;
+  padding: 20px 32px;
   max-width: 420px;
   width: 100%;
   text-align: center;
@@ -609,7 +611,7 @@ a{
 }
 
 .loginBtn {
-  background: var(--accent);
+  background: #e27268;
   color: #fff;
   border: none;
   padding: 12px 0;
@@ -620,8 +622,14 @@ a{
 }
 
 .loginBtn:hover {
-  background: #e27268;
+  background: #e05649;
 }
+
+input[type="radio"] {
+  accent-color: #e05649;
+  cursor: pointer;
+}
+
 
 .loginNote {
   font-size: 13px;
@@ -643,4 +651,80 @@ a{
   .loginBox {
     padding: 28px 20px;
   }
+}
+/* Register Page */
+.registerPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+}
+
+.registerBox {
+  color: #fff;
+  padding-top: 20px;
+  padding-left: 40px;
+  padding-bottom: 20px;
+  padding-right: 40px;  
+  border-radius: 12px;
+  box-shadow: 0 0 10px #333;
+  width: 100%;
+  max-width: 420px;
+  margin-top: 5%;
+}
+
+.registerBox h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #e27268;
+  margin: 5px;
+}
+
+.registerForm .inputGroup {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.registerForm label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #e27268;
+}
+
+.registerForm input {
+  padding: 10px;
+  border: 2px solid #e27268;
+  border-radius: 6px;
+}
+.mainBtn {
+  width: 100%;
+  background: #e27268;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#shopnow{
+  max-width: 150px;
+  text-align: center;
+}
+.mainBtn:hover {
+  background: #e05649;
+}
+
+.loginLink {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+  color: black;
+}
+
+.loginLink a {
+  color: #e05649;
+  text-decoration: none;
 }

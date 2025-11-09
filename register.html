@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Bookify</title>
+  <link rel="stylesheet" href="index.css">
+    <link rel="icon" type="image/png" href="images/icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="mainHeader">
+    <div class="wrap headerFlex">
+      <div class="logoBox">
+        <div class="logoTag">Booki</div>
+        <span class="logoName">fy</span>
+      </div>
+      <nav class="navBar">
+        <a href="index.html" class="navItem">Home</a>
+        <a href="#" class="navItem">Shop</a>
+        <a href="#" class="navItem">Products</a>
+        <a href="about.html" class="navItem">About</a>
+        <a href="contact.html" class="navItem">Contact</a>
+      </nav>
+      <div class="headerBtns">
+        <button class="btnIcon">Search</button>
+        <button class="btnCart">🛒 Cart</button>
+        <button class="btnIcon" onclick="window.location.href='login.html'">Login</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="registerPage">
+    <div class="registerBox">
+      <h2>Create an Account</h2>
+      <form action="#" class="registerForm">
+        <div class="inputGroup">
+          <label for="name">Full Name:</label>
+          <input type="text" id="name" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="inputGroup">
+          <label for="email">Email:</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="inputGroup">
+          <label for="password">Password:</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+        </div>
+
+        <div class="inputGroup">
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+        </div>
+        <button type="submit" class="mainBtn">Register Now</button>
+        <p class="loginLink">Already have an account? <a href="login.html">Login here</a></p>
+      </form>
+    </div>
+        
+  </main>
+<footer class="mainFooter">
+            <p>Bookify. All rights reserved. @ 2025</p>
+    </footer>
+</body>
+</html>
