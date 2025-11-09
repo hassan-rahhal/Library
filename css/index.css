@@ -88,18 +88,6 @@ a{
   gap: 15px;
 }
 
-/* Search Bar */
-.searchBar {
-  background-color: #fff;
-    color: #e05649;
-    border: 2px solid #e05649;
-    padding: 5px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    width: 200px;
-}
-
 .btnNav {
     background-color: #fff;
     color: #e05649;
@@ -757,3 +745,4 @@ input[type="radio"] {
     background-color: #e05649;
     color: #fff;
 }
+
