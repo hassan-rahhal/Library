@@ -1,27 +1,17 @@
-:root {
-    --bg: #fff;
-    --light: #f3f4f5;
-    --text: #222;
-    --textDim: #6b6b6b;
-    --mainColor: #f08a80;
-    --maxWidth: 1200px;
-    --radius: 12px;
-    --shadow: 0 6px 20px rgba(31,31,31,0.06);
+*  { 
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    color: #222;
+    background: #fff;
+    line-height: 1.5;
     font-size: 16px;
     font-family: "Montserrat", sans-serif;
 }
-*  { 
-    box-sizing: border-box;
-    }
-body {
-    margin: 0;
-    color: var(--text);
-    background: var(--bg);
-    line-height: 1.5;
-}
 .wrap {
     width: 100%;
-    max-width: var(--maxWidth);
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 24px;
 }
@@ -105,7 +95,7 @@ a{
 }
 
 .heroSection {
-    background: var(--light);
+    background: #f3f4f5;
     padding: 105px 0;
 }
 .heroLayout {
@@ -118,7 +108,7 @@ a{
     max-width: 700px;
 }
 .tagLine {
-    color: var(--mainColor);
+    color: #f08a80;
     font-weight: 700;
     margin-bottom: 8px;
 }
@@ -129,10 +119,10 @@ a{
     margin: 0 0 18px 0;
 }
 .highlight {
-    color: var(--mainColor);
+    color: #f08a80;
 }
 .heroInfo {
-    color: var(--textDim);
+    color: #6b6b6b;
     margin-bottom: 22px;
 }
 .heroBtns {
@@ -140,7 +130,7 @@ a{
     gap: 14px;
 }
 .mainBtn {
-    background: var(--mainColor);
+    background: #f08a80;
     color: #fff;
     padding: 12px 18px;
     border-radius: 8px;
@@ -149,7 +139,7 @@ a{
 }
 .ghostBtn {
     background: none;
-    color: var(--textDim);
+    color: #6b6b6b;
     text-decoration: none;
     padding: 12px 18px;
 }
@@ -161,7 +151,7 @@ a{
     width: 100%;
     max-width: 420px;
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 6px 20px rgba(31,31,31,0.06);
 }
 .booksSection {
     padding: 64px 0;
@@ -175,7 +165,7 @@ a{
     font-weight: 800;
 }
 .sectionNote {
-    color: var(--textDim);
+    color: #6b6b6b;
 }
 .bookList {
     display: grid;
@@ -184,8 +174,8 @@ a{
 }
 .bookCard {
     background: #fff;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(31,31,31,0.06);
     position: relative;
     transition: transform .25s ease, box-shadow .25s ease;
 }
@@ -197,7 +187,7 @@ a{
     position: absolute;
     top: 12px;
     left: 12px;
-    background: var(--mainColor);
+    background: #f08a80;
     color: #fff;
     padding: 6px 8px;
     border-radius: 6px;
@@ -217,7 +207,7 @@ a{
     margin: 0 0 6px 0;
 }
 .bookAuthor {
-    color: var(--textDim);
+    color: #6b6b6b;
     font-size: 13px;
 }
 .mainFooter {
