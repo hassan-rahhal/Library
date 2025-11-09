@@ -3,9 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Super Admin Dashboard | Bookify</title>
+    <link rel="stylesheet" href="css/superadmin.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="icon" type="image/png" href="images/icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Hello supper admin</h1>
+    <header>
+        Super Admin Dashboard
+        <button class="logoutBtn">Logout</button>
+    </header>
+    <div class="container">
+        <h2>Create Admin User</h2>
+        <form id="createAdminForm">
+            <div>
+                <label for="adminName">Name:</label>
+                <input type="text" id="adminName" placeholder="Enter admin name" required>
+            </div>
+            <div>
+                <label for="adminEmail">Email:</label>
+                <input type="email" id="adminEmail" placeholder="Enter admin email" required>
+            </div>
+            <div>
+                <label for="adminPassword">Password:</label>
+                <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+            </div>
+            <button type="submit">Create Admin</button>
+        </form>
+        <h2 style="margin-top:40px;">Existing Admins</h2>
+        <table id="adminTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+<footer>
+    Bookify. All rights reserved. @ 2025
+</footer>
+<script src="js/index.js"></script>
 </body>
 </html>
