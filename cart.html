@@ -9,24 +9,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="mainHeader">
-      <div class="wrap headerFlex">
-        <div class="logoBox">
-          <div class="logoTag">Booki</div>
-            <span class="logoName">fy</span>
-          </div>
-        <nav class="navBar">
-          <a href="index.html" class="navItem">Home</a>
-          <a href="products.html" class="navItem">Products</a>
-          <a href="about.html" class="navItem">About</a>
-          <a href="contact.html" class="navItem">Contact</a>
-        </nav>
-          <div class="headerBtns">
-            <input type="text" class="searchBar" placeholder="Search for books...">
-            <a href="cart.html"><button class="btnNav">Cart</button></a>
-            <a href="login.html"><button class="btnNav">Login</button></a>
-          </div>
-      </div>
+    <header class="mainHeader" >
+        <div style="max-width: 100%;" class="wrap headerFlex">
+            <a href="index.html" style="text-decoration: none;">
+                <div class="logoBox">
+                    <div class="logoTag">Booki</div>
+                    <span class="logoName">fy</span>
+                </div>
+            </a>
+            <nav class="navBar">
+                <a href="index.html" class="navItem">Home</a>
+                <a href="products.html" class="navItem">Products</a>
+                <a href="about.html" class="navItem">About</a>
+                <a href="contact.html" class="navItem">Contact</a>
+            </nav>
+            <div class="headerBtns">
+                <input type="text" class="searchBar" placeholder="Search for books...">
+                <a href="cart.html"><button class="btnNav">Cart</button></a>
+                <a href="login.html"><button class="btnNav loginBtn">Login</button></a>
+                <button class="logoutBtn btnNav" style="display:none; margin-left:5px;">Logout</button>
+                <span class="userDisplay" style="margin-left:10px;"></span>
+            </div>
+        </div>
     </header>
   <main class="productMain">
     <div class="wrap productLayout">
