@@ -735,4 +735,56 @@ input[type="radio"] {
     background-color: #e05649;
     color: #fff;
 }
+/* Header Responsive */
+@media (max-width: 1000px) {
+  .heroLayout { 
+    grid-template-columns: 1fr 360px; 
+  }
+  .bookList { 
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+
+@media (max-width: 820px) {
+  .navBar {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    flex-direction: column;
+    gap: 0;
+    box-shadow: 0 6px 20px rgba(31,31,31,0.06);
+  }
+
+  .navBar.active {
+    display: flex;
+  }
+
+  .navItem {
+    padding: 12px 24px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .headerFlex {
+    padding: 15px 20px;
+  }
+
+  .menuToggle {
+    display: block;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #f08a80;
+  }
+}
+
+@media (max-width: 480px) {
+  .bookList { 
+    grid-template-columns: 1fr; 
+  }
+  .logoName { 
+    display: none; 
+  }
+}
 

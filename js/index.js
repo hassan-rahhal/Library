@@ -267,4 +267,10 @@ if (adminLogoutBtn) {
         window.location.href = "index.html";
     });
 }
+const menuToggle = document.querySelector('.menuToggle');
+const navBar = document.querySelector('.navBar');
+
+menuToggle.addEventListener('click', () => {
+  navBar.classList.toggle('active');
+});
 
