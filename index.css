@@ -372,7 +372,6 @@ a{
   }
 }
 .contact-section {
-  margin-top: 120px; /* avoid overlap with fixed navbar */
   padding: 60px 80px;
   background-color: #f9f9f9;
   text-align: center;
@@ -392,7 +391,6 @@ a{
   line-height: 1.6;
 }
 
-/* Form Styling */
 .contact-form {
   max-width: 600px;
   margin: 0 auto;
@@ -436,4 +434,213 @@ a{
 
 .btn:hover {
   background-color: #e05649;
+}
+/* PRODUCT PAGE */
+.productMain {
+  padding: 60px 0;
+  background: var(--muted);
+}
+
+.productLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.productImgBox {
+  background: #fff;
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.productImg {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.productDetails {
+  background: #fff;
+  border-radius: var(--card-radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.productTitle {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+}
+
+.productAuthor {
+  color: var(--muted-text);
+  margin-bottom: 12px;
+}
+
+.productPrice {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.productDesc {
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.productActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.quantityInput {
+  width: 60px;
+  padding: 6px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.addToCartBtn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.addToCartBtn:hover {
+  background: #e27268;
+}
+
+.productMeta p {
+  margin: 6px 0;
+  color: var(--muted-text);
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 820px) {
+  .productLayout {
+    grid-template-columns: 1fr;
+  }
+  .productImg {
+    max-width: 100%;
+  }
+}
+/* LOGIN PAGE */
+.loginMain {
+  background: var(--muted);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.loginBox {
+  background: #fff;
+  box-shadow: var(--shadow);
+  border-radius: var(--card-radius);
+  padding: 40px 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+.loginTitle {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: var(--text);
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.formGroup {
+  text-align: left;
+}
+
+.formGroup label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.inputField {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.inputField:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.roleGroup {
+  margin-top: 10px;
+}
+
+.roleOptions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.loginBtn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 12px 0;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.loginBtn:hover {
+  background: #e27268;
+}
+
+.loginNote {
+  font-size: 13px;
+  margin-top: 14px;
+  color: var(--muted-text);
+}
+
+.loginNote a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.loginNote a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .loginBox {
+    padding: 28px 20px;
+  }
 }

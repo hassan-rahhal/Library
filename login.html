@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookify | Login</title>
+  <link rel="stylesheet" href="index.css">
+    <link rel="icon" type="image/png" href="images/icon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="mainHeader">
+    <div class="wrap headerFlex">
+      <div class="logoBox">
+        <div class="logoTag">Booki</div>
+        <span class="logoName">fy</span>
+      </div>
+      <nav class="navBar">
+        <a href="index.html" class="navItem">Home</a>
+        <a href="#" class="navItem">Shop</a>
+        <a href="#" class="navItem">Products</a>
+        <a href="about.html" class="navItem">About</a>
+        <a href="contact.html" class="navItem">Contact</a>
+      </nav>
+      <div class="headerBtns">
+        <input type="text" class="searchBar" placeholder="Search books..." />
+        <button class="cartBtn">View Cart</button>
+        <button class="menuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="loginMain">
+    <div class="wrap loginBox">
+      <h2 class="loginTitle">Login to Your Account</h2>
+
+      <form class="loginForm" onsubmit="return false;">
+        <div class="formGroup">
+          <label for="email">Email</label>
+          <input type="email" id="email" class="inputField" placeholder="Enter your email" required>
+        </div>
+
+        <div class="formGroup">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="inputField" placeholder="Enter your password" required>
+        </div>
+
+        <div class="formGroup roleGroup">
+          <label>Login as:</label>
+          <div class="roleOptions">
+            <label><input type="radio" name="role" value="customer" checked> Customer</label>
+            <label><input type="radio" name="role" value="admin"> Admin</label>
+          </div>
+        </div>
+
+        <button type="submit" class="loginBtn">Login</button>
+
+        <p class="loginNote">
+          Don't have an account? <a href="#">Register here</a>
+        </p>
+      </form>
+    </div>
+  </main>
+
+    <footer class="mainFooter">
+            <p>Bookify. All rights reserved. @ 2025</p>
+    </footer>
+
+</body>
+</html>
