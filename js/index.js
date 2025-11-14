@@ -149,128 +149,239 @@ if (document.getElementById("createAdminForm")) {
     });
     renderAdminTable();
 }
-if (document.getElementById("createBookForm") || document.getElementById("bookTable")) {
-    function getBooks() {
-        return JSON.parse(localStorage.getItem("books") || "[]");
-    }
-    function saveBooks(books) {
-        localStorage.setItem("books", JSON.stringify(books));
-    }
-    function renderBooks() {
-        const books = getBooks();
-        const tbody = document.querySelector("#bookTable tbody");
-        if (!tbody) return;
-        tbody.innerHTML = "";
-        books.forEach((book, index) => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${book.title}</td>
-                <td>${book.author}</td>
-                <td>
-                <button class="editBtn" data-index="${index}">Edit</button>
-                <button class="deleteBtn" data-index="${index}">Delete</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-        document.querySelectorAll(".deleteBtn").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const idx = parseInt(btn.getAttribute("data-index"));
-                if(confirm("Are you sure you want to delete this book?")) {
-                    let books = getBooks();
-                    books.splice(idx, 1);
-                    saveBooks(books);
-                    renderBooks();
-                }
-            });
-        });
-        document.querySelectorAll(".editBtn").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const idx = parseInt(btn.getAttribute("data-index"));
-                const books = getBooks();
-                const book = books[idx];
-                document.getElementById("bookTitle").value = book.title;
-                document.getElementById("bookAuthor").value = book.author;
-                document.getElementById("bookCover").value = book.cover || "";
-                document.getElementById("bookDescription").value = book.description || "";
-                document.getElementById("bookTag").value = book.tag || "";
-                document.getElementById("createBookForm").onsubmit = (e) => {
-                    e.preventDefault();
-                    books[idx] = {
-                        title: document.getElementById("bookTitle").value,
-                        author: document.getElementById("bookAuthor").value,
-                        cover: document.getElementById("bookCover").value,
-                        description: document.getElementById("bookDescription").value,
-                        tag: document.getElementById("bookTag").value
-                    };
-                    saveBooks(books);
-                    renderBooks();
-                    e.target.reset();
-                    document.getElementById("createBookForm").onsubmit = addBookHandler;
-                };
-            });
-        });
-    }
 
-    function addBookHandler(e) {
-        e.preventDefault();
-        const title = document.getElementById("bookTitle").value;
-        const author = document.getElementById("bookAuthor").value;
-        const cover = document.getElementById("bookCover").value;
-        const description = document.getElementById("bookDescription").value;
-        const tag = document.getElementById("bookTag").value;
-        const books = getBooks();
-        books.push({ title, author, cover, description, tag });
-        saveBooks(books);
-        renderBooks();
-        e.target.reset();
-    }
-    document.getElementById("createBookForm").addEventListener("submit", addBookHandler);
-    function renderCustomers() {
-        const users = JSON.parse(localStorage.getItem("users") || "[]").filter(u => u.role === "customer");
-        const tbody = document.querySelector("#customerTable tbody");
-        if (!tbody) return;
-        tbody.innerHTML = "";
-        users.forEach((user, index) => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${user.name}</td>
-                <td>${user.email}</td>
-                <td>
-                <button class="deleteUserBtn" data-index="${index}">Delete</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
 
-        document.querySelectorAll(".deleteUserBtn").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const idx = parseInt(btn.getAttribute("data-index"));
-                const allUsers = JSON.parse(localStorage.getItem("users") || "[]");
-                const customers = allUsers.filter(u => u.role === "customer");
-                if(confirm(`Delete customer "${customers[idx].name}"?`)) {
-                    const updatedUsers = allUsers.filter(u => u.email !== customers[idx].email);
-                    localStorage.setItem("users", JSON.stringify(updatedUsers));
-                    renderCustomers();
-                }
-            });
-        });
-    }
-    renderBooks();
-    renderCustomers();
+// -------------------------------
+// LOCAL STORAGE HANDLERS
+// -------------------------------
+function getBooks() {
+    return JSON.parse(localStorage.getItem("books")) || [];
 }
-const adminLogoutBtn = document.querySelector(".admin-logout-btn");
-if (adminLogoutBtn) {
-    adminLogoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("loggedInUser");
-        alert("You have been logged out.");
-        window.location.href = "index.html";
-    });
-}
-const menuToggle = document.querySelector('.menuToggle');
-const navBar = document.querySelector('.navBar');
 
-menuToggle.addEventListener('click', () => {
-  navBar.classList.toggle('active');
+function saveBooks(books) {
+    localStorage.setItem("books", JSON.stringify(books));
+}
+
+// -------------------------------
+// UI ELEMENTS
+// -------------------------------
+const bookForm = document.getElementById("adminBookForm");
+const booksTableBody = document.querySelector("#booksTable tbody");
+const coverInput = document.getElementById("bookCover");
+const coverPreview = document.getElementById("adminCoverPreview");
+
+// Image Preview
+coverInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            coverPreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
 });
 
+// -------------------------------
+// ADD OR UPDATE BOOK
+// -------------------------------
+let editIndex = null;
+
+bookForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const title = document.getElementById("bookTitle").value.trim();
+    const author = document.getElementById("bookAuthor").value.trim();
+    const price = document.getElementById("bookPrice").value.trim();
+    const desc = document.getElementById("bookDesc").value.trim();
+    const cover = coverPreview.src || "";
+
+    if (!title || !author || !price || !desc) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    const books = getBooks();
+
+    const newBook = {
+        title,
+        author,
+        price,
+        desc,
+        cover
+    };
+
+    if (editIndex === null) {
+        books.push(newBook);
+    } else {
+        books[editIndex] = newBook;
+        editIndex = null;
+    }
+
+    saveBooks(books);
+    renderBooks();
+
+    bookForm.reset();
+    coverPreview.src = "";
+});
+
+// -------------------------------
+// RENDER BOOKS TABLE
+// -------------------------------
+function renderBooks() {
+    const books = getBooks();
+    booksTableBody.innerHTML = "";
+
+    books.forEach((book, index) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.price}$</td>
+            <td>
+                <button class="admin-edit-btn" onclick="editBook(${index})">Edit</button>
+                <button class="admin-delete-btn" onclick="deleteBook(${index})">Delete</button>
+            </td>
+        `;
+
+        booksTableBody.appendChild(row);
+    });
+}
+
+// -------------------------------
+// DELETE BOOK
+// -------------------------------
+function deleteBook(index) {
+    const books = getBooks();
+    books.splice(index, 1);
+    saveBooks(books);
+    renderBooks();
+}
+
+// -------------------------------
+// EDIT BOOK
+// -------------------------------
+function editBook(index) {
+    const books = getBooks();
+    const book = books[index];
+
+    document.getElementById("bookTitle").value = book.title;
+    document.getElementById("bookAuthor").value = book.author;
+    document.getElementById("bookPrice").value = book.price;
+    document.getElementById("bookDesc").value = book.desc;
+
+    coverPreview.src = book.cover;
+
+    editIndex = index;
+}
+
+// -------------------------------
+// LOAD BOOKS ON START
+// -------------------------------
+window.onload = renderBooks;
+function getCustomers() {
+    return JSON.parse(localStorage.getItem("customers")) || [];
+}
+
+function getBookings() {
+    return JSON.parse(localStorage.getItem("bookings")) || [];
+}
+const customersTableBody = document.querySelector("#customersTable tbody");
+
+function renderCustomers() {
+    const customers = getCustomers();
+    customersTableBody.innerHTML = "";
+
+    customers.forEach((customer, index) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${customer.name}</td>
+            <td>${customer.email}</td>
+            <td>
+                <button class="admin-edit-btn" onclick="viewCustomerBookings(${index})">
+                    View Bookings
+                </button>
+            </td>
+        `;
+
+        customersTableBody.appendChild(row);
+    });
+}
+function viewCustomerBookings(index) {
+    const customers = getCustomers();
+    const bookings = getBookings();
+    const books = getBooks();
+
+    const customer = customers[index];
+
+    const customerBookings = bookings.filter(b => b.customerEmail === customer.email);
+
+    if (customerBookings.length === 0) {
+        alert("This customer has no booked books.");
+        return;
+    }
+
+    let msg = `Customer: ${customer.name}\nEmail: ${customer.email}\n\nBooked Books:\n`;
+
+    customerBookings.forEach((booking, i) => {
+        const book = books.find(b => b.title === booking.bookTitle);
+
+        if (book) {
+            msg += `
+${i + 1}. ${book.title}
+Author: ${book.author}
+Price: ${book.price}$
+Description: ${book.desc}
+
+---------------------------
+`;
+        }
+    });
+
+    alert(msg);
+}
+
+function loginCustomer(customer) {
+    localStorage.setItem("loggedCustomer", JSON.stringify(customer));
+}
+function showLoggedCustomer() {
+    const customer = JSON.parse(localStorage.getItem("loggedCustomer"));
+    const displaySpan = document.querySelector(".userDisplay");
+
+    if (customer && displaySpan) {
+        displaySpan.textContent = customer.name;
+    }
+}
+window.onload = () => {
+    showLoggedCustomer();
+
+    if (typeof renderBooks === "function") renderBooks();
+    if (typeof renderCustomers === "function") renderCustomers();
+};
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.querySelector(".admin-logout-btn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            // Remove logged-in user
+            localStorage.removeItem("loggedInUser");
+
+            // Optional: remove admin flag
+            localStorage.removeItem("isAdmin");
+
+            // Show alert
+            alert("Logout successfully!");
+
+            // Redirect to login page
+            window.location.href = "login.html";
+        });
+    }
+});
+function showFavoritesOnLogin(isLoggedIn) {
+    const favoriteBtn = document.querySelector('.btnNav');
+    if (isLoggedIn) {
+        favoriteBtn.hidden = false; // Unhide the button
+    }
+}
