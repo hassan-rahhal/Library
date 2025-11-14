@@ -37,8 +37,13 @@ function saveFavorites(favorites) {
 function toggleFavorite(bookIndex) {
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) {
-        alert("Please login to add favorites!");
+        alert("Please login to manage favorites!");
         window.location.href = "login.html";
+        return;
+    }
+    
+    if (user.role !== "customer") {
+        alert("Only customers can add favorites.");
         return;
     }
     
@@ -46,8 +51,13 @@ function toggleFavorite(bookIndex) {
     const index = favorites.indexOf(bookIndex);
     
     if (index > -1) {
-        favorites.splice(index, 1);
-        alert("Removed from favorites!");
+        // Confirm removal
+        if (confirm("Remove this book from favorites?")) {
+            favorites.splice(index, 1);
+            alert("Removed from favorites!");
+        } else {
+            return; // Cancelled
+        }
     } else {
         favorites.push(bookIndex);
         alert("Added to favorites!");
@@ -58,16 +68,17 @@ function toggleFavorite(bookIndex) {
 }
 
 function updateFavoriteButtons() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user || user.role !== "customer") return;
+    
     const favorites = getFavorites();
     document.querySelectorAll('.favorite-btn').forEach(btn => {
         const bookIndex = parseInt(btn.getAttribute('data-index'));
-        if (favorites.includes(bookIndex)) {
-            btn.textContent = '❤️';
-            btn.classList.add('favorited');
-        } else {
-            btn.textContent = '🤍';
-            btn.classList.remove('favorited');
-        }
+        const isFavorited = favorites.includes(bookIndex);
+        
+        btn.textContent = isFavorited ? '❤️ Remove from Favorites' : '🤍 Add to Favorites';
+        btn.classList.toggle('favorited', isFavorited);
+        btn.setAttribute('aria-label', isFavorited ? 'Remove from favorites' : 'Add to favorites');
     });
 }
 
@@ -480,7 +491,7 @@ function renderProducts() {
         
         article.innerHTML = `
             <div class="bookTag">$${book.price}</div>
-            ${user && user.role === "customer" ? `<button class="favorite-btn" data-index="${index}" onclick="toggleFavorite(${index})">🤍</button>` : ''}
+            ${user && user.role === "customer" ? `<button class="favorite-btn" data-index="${index}" onclick="toggleFavorite(${index})" aria-label="Add to favorites">🤍 Add to Favorites</button>` : ''}
             <a href="productinfo.html?id=${index}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
             <div class="bookInfo">
                 <h3 class="bookName">${book.title}</h3>

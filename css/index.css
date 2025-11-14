@@ -788,3 +788,44 @@ input[type="radio"] {
   }
 }
 
+.favorite-btn {
+    background: #f08a80; /* Matches your theme color */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 5px;
+}
+.favorite-btn:hover {
+    background: #e0766e;
+}
+.favorite-btn.favorited {
+    background: #ff6b6b; /* Redder for favorited */
+}
+.favorite-btn.favorited:hover {
+    background: #ff5252;
+}
+.favorite-btn {
+    background: #f08a80; /* Matches your theme */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px; /* Space it from quantity input */
+}
+
+.favorite-btn:hover {
+    background: #e0766e;
+}
+
+.favorite-btn.favorited {
+    background: #ff6b6b; /* Redder for favorited */
+}
+
+.favorite-btn.favorited:hover {
+    background: #ff5252;
+}

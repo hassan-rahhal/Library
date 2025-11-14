@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bookify | Favorites</title>
+  <title>Bookify | Product Details</title>  <!-- Updated title to reflect it's product details, not favorites -->
   <link rel="stylesheet" href="css/index.css">
   <link rel="icon" type="image/png" href="images/icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-      <header class="mainHeader" >
+    <header class="mainHeader">
         <div style="max-width: 100%;" class="wrap headerFlex">
             <a href="index.html" style="text-decoration: none;">
                 <div class="logoBox">
@@ -32,35 +32,37 @@
             </div>
         </div>
     </header>
-  <main class="productMain">
-    <div class="wrap productLayout">
-      <div class="productImgBox">
-        <img src="images/sample1.jpg" alt="Book cover" class="productImg">
-      </div>
-      <div class="productDetails">
-        <h1 class="productTitle">Blue in the Night</h1>
-        <p class="productAuthor">by John Doe</p>
-        <p class="productPrice">$19.99</p>
-        <p class="productDesc">
-          A thrilling mystery novel that explores the dark secrets of a small coastal town.
-          Perfect for readers who love suspense, strong characters, and unexpected twists.
-        </p>
-        <div class="productActions">
-          <label for="quantity">Qty:</label>
-          <input type="number" id="quantity" min="1" value="1" class="quantityInput">
-          <button class="addToCartBtn">Add to Cart</button>
+    <main class="productMain">
+        <div class="wrap productLayout">
+            <div class="productImgBox">
+                <img src="images/sample1.jpg" alt="Book cover" class="productImg">
+            </div>
+            <div class="productDetails">
+                <h1 class="productTitle">Blue in the Night</h1>
+                <p class="productAuthor">by John Doe</p>
+                <p class="productPrice">$19.99</p>
+                <p class="productDesc">
+                    A thrilling mystery novel that explores the dark secrets of a small coastal town.
+                    Perfect for readers who love suspense, strong characters, and unexpected twists.
+                </p>
+                <div class="productActions">
+                    <!-- Added favorite button here, only visible for customers -->
+                    <button id="favoriteBtn" class="favorite-btn" style="display: none;" aria-label="Add to favorites">🤍 Add to Favorites</button>
+                    <label for="quantity">Qty:</label>
+                    <input type="number" id="quantity" min="1" value="1" class="quantityInput">
+                    <button class="addToCartBtn">Add to Cart</button>
+                </div>
+                <div class="productMeta">
+                    <p><strong>Genre:</strong> Mystery</p>
+                    <p><strong>Published:</strong> 2021</p>
+                    <p><strong>Rating:</strong> ⭐ 4.5 / 5</p>
+                </div>
+            </div>
         </div>
-        <div class="productMeta">
-          <p><strong>Genre:</strong> Mystery</p>
-          <p><strong>Published:</strong> 2021</p>
-          <p><strong>Rating:</strong> ⭐ 4.5 / 5</p>
-        </div>
-      </div>
-    </div>
-  </main>
+    </main>
     <footer class="mainFooter">
-      <p>Bookify. All rights reserved. @ 2025</p>
+        <p>Bookify. All rights reserved. @ 2025</p>
     </footer>
-<script src="js/index.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
