@@ -1,9 +1,90 @@
+// ===========================
+// USER MANAGEMENT
+// ===========================
 function getUsers() {
     return JSON.parse(localStorage.getItem("users") || "[]");
 }
 function saveUsers(users) {
     localStorage.setItem("users", JSON.stringify(users));
 }
+
+// ===========================
+// BOOKS MANAGEMENT
+// ===========================
+function getBooks() {
+    return JSON.parse(localStorage.getItem("books")) || [];
+}
+
+function saveBooks(books) {
+    localStorage.setItem("books", JSON.stringify(books));
+}
+
+// ===========================
+// FAVORITES MANAGEMENT
+// ===========================
+function getFavorites() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) return [];
+    return JSON.parse(localStorage.getItem(`favorites_${user.email}`)) || [];
+}
+
+function saveFavorites(favorites) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) return;
+    localStorage.setItem(`favorites_${user.email}`, JSON.stringify(favorites));
+}
+
+function toggleFavorite(bookIndex) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+        alert("Please login to add favorites!");
+        window.location.href = "login.html";
+        return;
+    }
+    
+    let favorites = getFavorites();
+    const index = favorites.indexOf(bookIndex);
+    
+    if (index > -1) {
+        favorites.splice(index, 1);
+        alert("Removed from favorites!");
+    } else {
+        favorites.push(bookIndex);
+        alert("Added to favorites!");
+    }
+    
+    saveFavorites(favorites);
+    updateFavoriteButtons();
+}
+
+function updateFavoriteButtons() {
+    const favorites = getFavorites();
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        const bookIndex = parseInt(btn.getAttribute('data-index'));
+        if (favorites.includes(bookIndex)) {
+            btn.textContent = '❤️';
+            btn.classList.add('favorited');
+        } else {
+            btn.textContent = '🤍';
+            btn.classList.remove('favorited');
+        }
+    });
+}
+
+// ===========================
+// CONTACT MESSAGES
+// ===========================
+function getMessages() {
+    return JSON.parse(localStorage.getItem("messages")) || [];
+}
+
+function saveMessages(messages) {
+    localStorage.setItem("messages", JSON.stringify(messages));
+}
+
+// ===========================
+// REGISTER
+// ===========================
 const registerForm = document.querySelector(".registerForm");
 if (registerForm) {
     registerForm.addEventListener("submit", function (e) {
@@ -28,6 +109,10 @@ if (registerForm) {
         window.location.href = "login.html";
     });
 }
+
+// ===========================
+// LOGIN
+// ===========================
 const loginForm = document.querySelector(".loginForm");
 if (loginForm) {
     const emailInput = document.getElementById("email");
@@ -69,6 +154,8 @@ if (loginForm) {
         }
     });
 }
+
+// Create superadmin if doesn't exist
 let users = getUsers();
 if (!users.some(u => u.email === "superadmin@gmail.com")) {
     users.push({
@@ -79,14 +166,22 @@ if (!users.some(u => u.email === "superadmin@gmail.com")) {
     });
     saveUsers(users);
 }
-const logoutBtn = document.querySelector(".logoutBtn");
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
+
+// ===========================
+// LOGOUT
+// ===========================
+const logoutBtns = document.querySelectorAll(".logoutBtn, .admin-logout-btn");
+logoutBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
         localStorage.removeItem("loggedInUser");
         alert("You have been logged out.");
         window.location.href = "index.html";
     });
-}
+});
+
+// ===========================
+// SUPERADMIN - CREATE ADMIN
+// ===========================
 if (document.getElementById("createAdminForm")) {
     const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "{}");
 
@@ -150,85 +245,72 @@ if (document.getElementById("createAdminForm")) {
     renderAdminTable();
 }
 
-
-// -------------------------------
-// LOCAL STORAGE HANDLERS
-// -------------------------------
-function getBooks() {
-    return JSON.parse(localStorage.getItem("books")) || [];
-}
-
-function saveBooks(books) {
-    localStorage.setItem("books", JSON.stringify(books));
-}
-
-// -------------------------------
-// UI ELEMENTS
-// -------------------------------
+// ===========================
+// ADMIN - BOOK MANAGEMENT
+// ===========================
 const bookForm = document.getElementById("adminBookForm");
 const booksTableBody = document.querySelector("#booksTable tbody");
 const coverInput = document.getElementById("bookCover");
 const coverPreview = document.getElementById("adminCoverPreview");
 
-// Image Preview
-coverInput.addEventListener("change", function () {
-    const file = this.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            coverPreview.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
+if (coverInput && coverPreview) {
+    coverInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                coverPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
 
-// -------------------------------
-// ADD OR UPDATE BOOK
-// -------------------------------
 let editIndex = null;
 
-bookForm.addEventListener("submit", function (e) {
-    e.preventDefault();
+if (bookForm) {
+    bookForm.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    const title = document.getElementById("bookTitle").value.trim();
-    const author = document.getElementById("bookAuthor").value.trim();
-    const price = document.getElementById("bookPrice").value.trim();
-    const desc = document.getElementById("bookDesc").value.trim();
-    const cover = coverPreview.src || "";
+        const title = document.getElementById("bookTitle").value.trim();
+        const author = document.getElementById("bookAuthor").value.trim();
+        const price = document.getElementById("bookPrice").value.trim();
+        const desc = document.getElementById("bookDesc").value.trim();
+        const cover = coverPreview.src || "";
 
-    if (!title || !author || !price || !desc) {
-        alert("Please fill all fields");
-        return;
-    }
+        if (!title || !author || !price || !desc) {
+            alert("Please fill all fields");
+            return;
+        }
 
-    const books = getBooks();
+        const books = getBooks();
 
-    const newBook = {
-        title,
-        author,
-        price,
-        desc,
-        cover
-    };
+        const newBook = {
+            title,
+            author,
+            price,
+            desc,
+            cover
+        };
 
-    if (editIndex === null) {
-        books.push(newBook);
-    } else {
-        books[editIndex] = newBook;
-        editIndex = null;
-    }
+        if (editIndex === null) {
+            books.push(newBook);
+        } else {
+            books[editIndex] = newBook;
+            editIndex = null;
+        }
 
-    saveBooks(books);
-    renderBooks();
+        saveBooks(books);
+        renderBooksTable();
 
-    bookForm.reset();
-    coverPreview.src = "";
-});
+        bookForm.reset();
+        coverPreview.src = "";
+    });
+}
 
-// -------------------------------
-// RENDER BOOKS TABLE
-// -------------------------------
-function renderBooks() {
+function renderBooksTable() {
+    if (!booksTableBody) return;
+    
     const books = getBooks();
     booksTableBody.innerHTML = "";
 
@@ -238,7 +320,7 @@ function renderBooks() {
         row.innerHTML = `
             <td>${book.title}</td>
             <td>${book.author}</td>
-            <td>${book.price}$</td>
+            <td>$${book.price}</td>
             <td>
                 <button class="admin-edit-btn" onclick="editBook(${index})">Edit</button>
                 <button class="admin-delete-btn" onclick="deleteBook(${index})">Delete</button>
@@ -249,19 +331,13 @@ function renderBooks() {
     });
 }
 
-// -------------------------------
-// DELETE BOOK
-// -------------------------------
 function deleteBook(index) {
     const books = getBooks();
     books.splice(index, 1);
     saveBooks(books);
-    renderBooks();
+    renderBooksTable();
 }
 
-// -------------------------------
-// EDIT BOOK
-// -------------------------------
 function editBook(index) {
     const books = getBooks();
     const book = books[index];
@@ -276,20 +352,18 @@ function editBook(index) {
     editIndex = index;
 }
 
-// -------------------------------
-// LOAD BOOKS ON START
-// -------------------------------
-window.onload = renderBooks;
+// ===========================
+// ADMIN - CUSTOMER MANAGEMENT
+// ===========================
 function getCustomers() {
-    return JSON.parse(localStorage.getItem("customers")) || [];
+    return getUsers().filter(u => u.role === "customer");
 }
 
-function getBookings() {
-    return JSON.parse(localStorage.getItem("bookings")) || [];
-}
 const customersTableBody = document.querySelector("#customersTable tbody");
 
 function renderCustomers() {
+    if (!customersTableBody) return;
+    
     const customers = getCustomers();
     customersTableBody.innerHTML = "";
 
@@ -300,88 +374,302 @@ function renderCustomers() {
             <td>${customer.name}</td>
             <td>${customer.email}</td>
             <td>
-                <button class="admin-edit-btn" onclick="viewCustomerBookings(${index})">
-                    View Bookings
-                </button>
+                <button class="admin-delete-btn" onclick="deleteCustomer('${customer.email}')">Delete</button>
             </td>
         `;
 
         customersTableBody.appendChild(row);
     });
 }
-function viewCustomerBookings(index) {
-    const customers = getCustomers();
-    const bookings = getBookings();
-    const books = getBooks();
 
-    const customer = customers[index];
+function deleteCustomer(email) {
+    if (confirm(`Are you sure you want to delete this customer?`)) {
+        let users = getUsers();
+        users = users.filter(u => u.email !== email);
+        saveUsers(users);
+        renderCustomers();
+    }
+}
 
-    const customerBookings = bookings.filter(b => b.customerEmail === customer.email);
+// ===========================
+// ADMIN - MESSAGES MANAGEMENT
+// ===========================
+const messagesTableBody = document.querySelector("#messagesTable tbody");
 
-    if (customerBookings.length === 0) {
-        alert("This customer has no booked books.");
+function renderMessages() {
+    if (!messagesTableBody) return;
+    
+    const messages = getMessages();
+    messagesTableBody.innerHTML = "";
+
+    if (messages.length === 0) {
+        messagesTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center">No messages yet</td></tr>';
         return;
     }
 
-    let msg = `Customer: ${customer.name}\nEmail: ${customer.email}\n\nBooked Books:\n`;
+    messages.forEach((msg, index) => {
+        const row = document.createElement("tr");
 
-    customerBookings.forEach((booking, i) => {
-        const book = books.find(b => b.title === booking.bookTitle);
+        row.innerHTML = `
+            <td>${msg.name}<br><small>${msg.email}</small></td>
+            <td>${msg.message}<br><small>Phone: ${msg.phone}</small></td>
+            <td>
+                <button class="admin-delete-btn" onclick="deleteMessage(${index})">Delete</button>
+            </td>
+        `;
 
-        if (book) {
-            msg += `
-${i + 1}. ${book.title}
-Author: ${book.author}
-Price: ${book.price}$
-Description: ${book.desc}
-
----------------------------
-`;
-        }
+        messagesTableBody.appendChild(row);
     });
-
-    alert(msg);
 }
 
-function loginCustomer(customer) {
-    localStorage.setItem("loggedCustomer", JSON.stringify(customer));
-}
-function showLoggedCustomer() {
-    const customer = JSON.parse(localStorage.getItem("loggedCustomer"));
-    const displaySpan = document.querySelector(".userDisplay");
-
-    if (customer && displaySpan) {
-        displaySpan.textContent = customer.name;
+function deleteMessage(index) {
+    if (confirm("Delete this message?")) {
+        let messages = getMessages();
+        messages.splice(index, 1);
+        saveMessages(messages);
+        renderMessages();
     }
 }
-window.onload = () => {
-    showLoggedCustomer();
 
-    if (typeof renderBooks === "function") renderBooks();
-    if (typeof renderCustomers === "function") renderCustomers();
-};
-document.addEventListener("DOMContentLoaded", () => {
-    const logoutBtn = document.querySelector(".admin-logout-btn");
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            // Remove logged-in user
-            localStorage.removeItem("loggedInUser");
-
-            // Optional: remove admin flag
-            localStorage.removeItem("isAdmin");
-
-            // Show alert
-            alert("Logout successfully!");
-
-            // Redirect to login page
-            window.location.href = "login.html";
+// ===========================
+// CONTACT FORM
+// ===========================
+const contactForm = document.querySelector(".contact-form");
+if (contactForm) {
+    contactForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phonenumber").value.trim();
+        const message = document.getElementById("message").value.trim();
+        
+        const messages = getMessages();
+        messages.push({
+            name,
+            email,
+            phone,
+            message,
+            date: new Date().toLocaleString()
         });
+        
+        saveMessages(messages);
+        alert("Message sent successfully! We'll get back to you soon.");
+        contactForm.reset();
+    });
+}
+
+// ===========================
+// RENDER PRODUCTS DYNAMICALLY
+// ===========================
+function renderProducts() {
+    const bookList = document.querySelector(".bookList");
+    if (!bookList) return;
+    
+    const books = getBooks();
+    
+    if (books.length === 0) {
+        bookList.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No books available yet. Check back soon!</p>';
+        return;
     }
-});
-function showFavoritesOnLogin(isLoggedIn) {
-    const favoriteBtn = document.querySelector('.btnNav');
-    if (isLoggedIn) {
-        favoriteBtn.hidden = false; // Unhide the button
+    
+    bookList.innerHTML = "";
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    
+    books.forEach((book, index) => {
+        const article = document.createElement("article");
+        article.className = "bookCard";
+        
+        article.innerHTML = `
+            <div class="bookTag">$${book.price}</div>
+            ${user && user.role === "customer" ? `<button class="favorite-btn" data-index="${index}" onclick="toggleFavorite(${index})">🤍</button>` : ''}
+            <a href="productinfo.html?id=${index}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
+            <div class="bookInfo">
+                <h3 class="bookName">${book.title}</h3>
+                <p class="bookAuthor">by ${book.author}</p>
+            </div>
+        `;
+        
+        bookList.appendChild(article);
+    });
+    
+    if (user && user.role === "customer") {
+        updateFavoriteButtons();
     }
 }
+
+// ===========================
+// PRODUCT DETAILS PAGE
+// ===========================
+function renderProductDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('id');
+    
+    
+    const books = getBooks();
+    const book = books[parseInt(bookId)];
+    
+    
+    const productImg = document.querySelector(".productImg");
+    const productTitle = document.querySelector(".productTitle");
+    const productAuthor = document.querySelector(".productAuthor");
+    const productPrice = document.querySelector(".productPrice");
+    const productDesc = document.querySelector(".productDesc");
+    
+    if (productImg) productImg.src = book.cover || 'images/book1.jpg';
+    if (productTitle) productTitle.textContent = book.title;
+    if (productAuthor) productAuthor.textContent = `by ${book.author}`;
+    if (productPrice) productPrice.textContent = `$${book.price}`;
+    if (productDesc) productDesc.textContent = book.desc;
+}
+
+// ===========================
+// RENDER FAVORITES PAGE
+// ===========================
+function renderFavorites() {
+    const bookList = document.querySelector(".bookList");
+    if (!bookList || !window.location.pathname.includes('favorite.html')) return;
+    
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+        bookList.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Please login to view favorites!</p>';
+        return;
+    }
+    
+    const favorites = getFavorites();
+    const books = getBooks();
+    
+    if (favorites.length === 0) {
+        bookList.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No favorites yet. Start adding books!</p>';
+        return;
+    }
+    
+    bookList.innerHTML = "";
+    
+    favorites.forEach(bookIndex => {
+        const book = books[bookIndex];
+        if (!book) return;
+        
+        const article = document.createElement("article");
+        article.className = "bookCard";
+        
+        article.innerHTML = `
+            <div class="bookTag">$${book.price}</div>
+            <button class="favorite-btn favorited" data-index="${bookIndex}" onclick="toggleFavorite(${bookIndex})">❤️</button>
+            <a href="productinfo.html?id=${bookIndex}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
+            <div class="bookInfo">
+                <h3 class="bookName">${book.title}</h3>
+                <p class="bookAuthor">by ${book.author}</p>
+            </div>
+        `;
+        
+        bookList.appendChild(article);
+    });
+}
+
+// ===========================
+// SEARCH & FILTER
+// ===========================
+function setupSearch() {
+    const searchInput = document.getElementById("searchInput");
+    if (!searchInput) return;
+    
+    searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        filterBooks(query);
+    });
+}
+
+function filterBooks(query) {
+    const bookList = document.querySelector(".bookList");
+    if (!bookList) return;
+    
+    const books = getBooks();
+    const filtered = books.filter(book => 
+        book.title.toLowerCase().includes(query) || 
+        book.author.toLowerCase().includes(query)
+    );
+    
+    bookList.innerHTML = "";
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    
+    if (filtered.length === 0) {
+        bookList.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No books found matching your search.</p>';
+        return;
+    }
+    
+    filtered.forEach((book, index) => {
+        const originalIndex = books.indexOf(book);
+        const article = document.createElement("article");
+        article.className = "bookCard";
+        
+        article.innerHTML = `
+            <div class="bookTag">$${book.price}</div>
+            ${user && user.role === "customer" ? `<button class="favorite-btn" data-index="${originalIndex}" onclick="toggleFavorite(${originalIndex})">🤍</button>` : ''}
+            <a href="productinfo.html?id=${originalIndex}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
+            <div class="bookInfo">
+                <h3 class="bookName">${book.title}</h3>
+                <p class="bookAuthor">by ${book.author}</p>
+            </div>
+        `;
+        
+        bookList.appendChild(article);
+    });
+    
+    if (user && user.role === "customer") {
+        updateFavoriteButtons();
+    }
+}
+
+// ===========================
+// USER DISPLAY & UI
+// ===========================
+function showLoggedUser() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    const displaySpan = document.querySelector(".userDisplay");
+    const loginBtn = document.querySelector(".loginBtn");
+    const logoutBtn = document.querySelector(".logoutBtn");
+    const favoriteBtn = document.querySelector('.headerBtns a[href="favorite.html"] button');
+
+    if (user) {
+        if (displaySpan) displaySpan.textContent = `Hello, ${user.name}`;
+        if (loginBtn) loginBtn.style.display = "none";
+        if (logoutBtn) logoutBtn.style.display = "inline-block";
+        if (favoriteBtn && user.role === "customer") favoriteBtn.hidden = false;
+    } else {
+        if (displaySpan) displaySpan.textContent = "";
+        if (loginBtn) loginBtn.style.display = "inline-block";
+        if (logoutBtn) logoutBtn.style.display = "none";
+        if (favoriteBtn) favoriteBtn.hidden = true;
+    }
+}
+
+// ===========================
+// MOBILE MENU TOGGLE
+// ===========================
+const menuToggle = document.querySelector(".menuToggle");
+const navBar = document.querySelector(".navBar");
+
+if (menuToggle && navBar) {
+    menuToggle.addEventListener("click", () => {
+        navBar.classList.toggle("active");
+    });
+}
+
+// ===========================
+// PAGE LOAD
+// ===========================
+window.onload = () => {
+    showLoggedUser();
+    
+    // Admin pages
+    if (typeof renderBooksTable === "function") renderBooksTable();
+    if (typeof renderCustomers === "function") renderCustomers();
+    if (typeof renderMessages === "function") renderMessages();
+    
+    // Customer pages
+    renderProducts();
+    renderProductDetails();
+    renderFavorites();
+    setupSearch();
+};
