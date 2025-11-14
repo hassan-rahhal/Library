@@ -341,16 +341,13 @@ function deleteBook(index) {
 function editBook(index) {
     const books = getBooks();
     const book = books[index];
-
     document.getElementById("bookTitle").value = book.title;
     document.getElementById("bookAuthor").value = book.author;
     document.getElementById("bookPrice").value = book.price;
     document.getElementById("bookDesc").value = book.desc;
-    document.getElementById("updatebook").innerText=bookbtn;
-
     coverPreview.src = book.cover;
-    bookbtn.innerHTML="Update Book";
     editIndex = index;
+    document.getElementById("updatebook").textContent = "Update Book";
 }
 
 // ===========================
