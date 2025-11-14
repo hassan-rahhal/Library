@@ -346,9 +346,10 @@ function editBook(index) {
     document.getElementById("bookAuthor").value = book.author;
     document.getElementById("bookPrice").value = book.price;
     document.getElementById("bookDesc").value = book.desc;
+    document.getElementById("updatebook").innerText=bookbtn;
 
     coverPreview.src = book.cover;
-
+    bookbtn.innerHTML="Update Book";
     editIndex = index;
 }
 
