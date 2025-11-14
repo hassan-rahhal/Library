@@ -85,6 +85,7 @@ function updateFavoriteButtons() {
 // ===========================
 // CONTACT MESSAGES
 // ===========================
+
 function getMessages() {
     return JSON.parse(localStorage.getItem("messages")) || [];
 }
@@ -404,29 +405,25 @@ function deleteCustomer(email) {
 // ADMIN - MESSAGES MANAGEMENT
 // ===========================
 const messagesTableBody = document.querySelector("#messagesTable tbody");
-
 function renderMessages() {
     if (!messagesTableBody) return;
     
     const messages = getMessages();
     messagesTableBody.innerHTML = "";
-
     if (messages.length === 0) {
         messagesTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center">No messages yet</td></tr>';
         return;
     }
-
     messages.forEach((msg, index) => {
         const row = document.createElement("tr");
-
+        // UPDATED: Added timestamp display and better formatting
         row.innerHTML = `
-            <td>${msg.name}<br><small>${msg.email}</small></td>
-            <td>${msg.message}<br><small>Phone: ${msg.phone}</small></td>
+            <td><strong>${msg.name}</strong><br><small>Email: ${msg.email}</small></td>
+            <td>${msg.message}<br><small>Phone: ${msg.phone}<br>Sent: ${msg.date}</small></td>
             <td>
                 <button class="admin-delete-btn" onclick="deleteMessage(${index})">Delete</button>
             </td>
         `;
-
         messagesTableBody.appendChild(row);
     });
 }
@@ -453,6 +450,11 @@ if (contactForm) {
         const phone = document.getElementById("phonenumber").value.trim();
         const message = document.getElementById("message").value.trim();
         
+        // ADDED: Basic validation
+        if (!name || !email || !phone || !message) {
+            alert("Please fill in all fields.");
+            return;
+        }
         const messages = getMessages();
         messages.push({
             name,
