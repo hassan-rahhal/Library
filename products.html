@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Products | Bookify Library</title>
+    <title>Products | Bookify Library</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="icon" type="image/png" href="images/icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="mainHeader" >
+    <header class="mainHeader">
         <div style="max-width: 100%;" class="wrap headerFlex">
             <a href="index.html" style="text-decoration: none;">
                 <div class="logoBox">
@@ -35,48 +35,21 @@
     <section class="booksSection">
         <div class="wrap">
             <header class="sectionHead">
-            <h2><span class="highlight">Products</span></h2>
-            <p class="sectionNote">Handpicked titles and new arrivals. Browse by genre, year, or popularity.</p>
+                <h2><span class="highlight">Products</span></h2>
+                <p class="sectionNote">Handpicked titles and new arrivals. Browse by genre, year, or popularity.</p>
+                <div style="max-width: 500px; margin: 20px auto;">
+                    <input type="text" id="searchInput" placeholder="🔍 Search by title or author..." 
+                           style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #f08a80; font-size: 16px;">
+                </div>
             </header>
-        <div class="bookList">
-            <article class="bookCard">
-                <div class="bookTag">17% OFF</div>
-                <a href="#"><img class="bookCover" src="images/book1.jpg" alt="Book A"></a>
-                <div class="bookInfo">
-                    <h3 class="bookName">The Midnight Library</h3>
-                    <p class="bookAuthor">by Matt Haig - 2020</p>
-                </div>
-            </article>
-            <article class="bookCard">
-                <div class="bookTag">4.5/5</div>
-                <a href="#"><img class="bookCover" src="images/book2.jpg" alt="Book B"></a>
-                <div class="bookInfo">
-                    <h3 class="bookName">Atomic Habits</h3>
-                    <p class="bookAuthor">by James Clear - 2018</p>
-                </div>
-            </article>
-            <article class="bookCard">
-                <div class="bookTag">New</div>
-                <a href="#"><img class="bookCover" src="images/book3.jpg" alt="Book C"></a>
-                <div class="bookInfo">
-                    <h3 class="bookName">Becoming</h3>
-                    <p class="bookAuthor">by Michelle Obama - 2018</p>
-                </div>
-            </article>
-            <article class="bookCard">
-                <div class="bookTag">Top</div>
-                <a href="#"><img class="bookCover" src="images/book4.jpg" alt="Book D"></a>
-                <div class="bookInfo">
-                    <h3 class="bookName">The Silent Patient</h3>
-                    <p class="bookAuthor">by Alex Michaelides - 2019</p>
-                </div>
-            </article>
+            <div class="bookList">
+                <!-- Books will be loaded dynamically -->
+            </div>
         </div>
-        </div>
-</section>
+    </section>
     <footer class="mainFooter">
         <p>Bookify. All rights reserved. @ 2025</p>
     </footer>
-<script src="js/index.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
