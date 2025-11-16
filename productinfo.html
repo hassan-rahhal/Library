@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookify | Product Details</title>
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="icon" type="image/png" href="images/icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    .product-detail-section {
+      padding-top: 100px;
+      padding-bottom: 60px;
+      background: #f9f9f9;
+    }
+    
+    .product-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .product-main-info {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 40px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
+    
+    .product-image-box {
+      text-align: center;
+    }
+    
+    .product-image-box img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .product-info-box h1 {
+      font-size: 32px;
+      color: #222;
+      margin-bottom: 10px;
+      font-family: "Playfair Display", serif;
+    }
+    
+    .product-author-text {
+      color: #6b6b6b;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .product-rating-display {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .stars {
+      font-size: 24px;
+      color: #ffa500;
+    }
+    
+    .rating-text {
+      color: #6b6b6b;
+      font-size: 16px;
+    }
+    
+    .product-price-text {
+      font-size: 36px;
+      color: #f08a80;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    
+    .product-description-text {
+      line-height: 1.8;
+      color: #444;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+    
+    .back-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #f08a80;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    
+    .back-btn:hover {
+      background: #e05649;
+      transform: translateY(-2px);
+    }
+    
+    /* Rating Section */
+    .rating-section {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
+    
+    .rating-section h2 {
+      color: #f08a80;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    
+    .rating-input-group {
+      margin-bottom: 20px;
+    }
+    
+    .star-rating {
+      display: flex;
+      gap: 10px;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    
+    .star {
+      cursor: pointer;
+      color: #ddd;
+      transition: 0.2s;
+    }
+    
+    .star:hover,
+    .star.active {
+      color: #ffa500;
+      transform: scale(1.1);
+    }
+    
+    .rating-form textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 15px;
+      resize: vertical;
+      min-height: 120px;
+      margin-bottom: 15px;
+    }
+    
+    .rating-form textarea:focus {
+      outline: none;
+      border-color: #f08a80;
+    }
+    
+    .submit-rating-btn {
+      background: #f08a80;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .submit-rating-btn:hover {
+      background: #e05649;
+    }
+    
+    .login-prompt {
+      background: #fff3cd;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #f08a80;
+      color: #856404;
+    }
+    
+    .login-prompt a {
+      color: #f08a80;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    
+    /* Comments Section */
+    .comments-section {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .comments-section h2 {
+      color: #f08a80;
+      margin-bottom: 25px;
+      font-size: 24px;
+    }
+    
+    .comment-card {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border-left: 4px solid #f08a80;
+    }
+    
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .comment-user {
+      font-weight: 600;
+      color: #222;
+      font-size: 16px;
+    }
+    
+    .comment-rating {
+      color: #ffa500;
+      font-size: 18px;
+    }
+    
+    .comment-date {
+      color: #999;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    
+    .comment-text {
+      color: #444;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    
+    .no-comments {
+      text-align: center;
+      color: #999;
+      padding: 40px;
+      font-style: italic;
+    }
+    
+    .delete-comment-btn {
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 5px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    
+    .delete-comment-btn:hover {
+      background: #e60000;
+    }
+    
+    @media (max-width: 768px) {
+      .product-main-info {
+        grid-template-columns: 1fr;
+      }
+      
+      .product-info-box h1 {
+        font-size: 24px;
+      }
+      
+      .product-price-text {
+        font-size: 28px;
+      }
+      
+      .star-rating {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <header class="mainHeader">
+        <div style="max-width: 100%;" class="wrap headerFlex">
+            <a href="index.html" style="text-decoration: none;">
+                <div class="logoBox">
+                    <div class="logoTag">Booki</div>
+                    <span class="logoName">fy</span>
+                </div>
+            </a>
+            <nav class="navBar">
+                <a href="index.html" class="navItem">Home</a>
+                <a href="products.html" class="navItem">Products</a>
+                <a href="about.html" class="navItem">About</a>
+                <a href="contact.html" class="navItem">Contact</a>
+            </nav>
+            <div class="headerBtns">
+                <a href="favorite.html"><button class="btnNav" hidden>Favorites</button></a>
+                <a href="login.html"><button class="btnNav loginBtn">Login</button></a>
+                <button class="logoutBtn btnNav" style="display:none; margin-left:5px;">Logout</button>
+                <span class="userDisplay" style="margin-left:10px;"></span>
+                <div class="menuToggle" hidden>&#9776;</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="product-detail-section">
+      <div class="product-container">
+        
+        <!-- Main Product Info -->
+        <div class="product-main-info">
+          <div class="product-image-box">
+            <img id="productImage" src="images/book1.jpg" alt="Book Cover">
+          </div>
+          
+          <div class="product-info-box">
+            <h1 id="productTitle">Loading...</h1>
+            <p class="product-author-text" id="productAuthor">by Author</p>
+            
+            <div class="product-rating-display">
+              <span class="stars" id="averageStars">☆☆☆☆☆</span>
+              <span class="rating-text" id="ratingText">(0 ratings)</span>
+            </div>
+            
+            <p class="product-price-text" id="productPrice">$0.00</p>
+            <p class="product-description-text" id="productDescription">Loading description...</p>
+            
+            <a href="products.html" class="back-btn">← Back to Products</a>
+          </div>
+        </div>
+
+        <!-- Rating Section -->
+        <div class="rating-section" id="ratingSection">
+          <h2>Rate This Book</h2>
+          <div id="ratingFormContainer">
+            <!-- Will be filled by JS -->
+          </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+          <h2>Customer Reviews</h2>
+          <div id="commentsContainer">
+            <p class="no-comments">No reviews yet. Be the first to review!</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="mainFooter">
+        <p>Bookify. All rights reserved. @ 2025</p>
+    </footer>
+    
+<script src="js/index.js"></script>
+</body>
+</html>

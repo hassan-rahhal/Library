@@ -37,13 +37,8 @@ function saveFavorites(favorites) {
 function toggleFavorite(bookIndex) {
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) {
-        alert("Please login to manage favorites!");
+        alert("Please login to add favorites!");
         window.location.href = "login.html";
-        return;
-    }
-    
-    if (user.role !== "customer") {
-        alert("Only customers can add favorites.");
         return;
     }
     
@@ -51,13 +46,8 @@ function toggleFavorite(bookIndex) {
     const index = favorites.indexOf(bookIndex);
     
     if (index > -1) {
-        // Confirm removal
-        if (confirm("Remove this book from favorites?")) {
-            favorites.splice(index, 1);
-            alert("Removed from favorites!");
-        } else {
-            return; // Cancelled
-        }
+        favorites.splice(index, 1);
+        alert("Removed from favorites!");
     } else {
         favorites.push(bookIndex);
         alert("Added to favorites!");
@@ -68,24 +58,22 @@ function toggleFavorite(bookIndex) {
 }
 
 function updateFavoriteButtons() {
-    const user = JSON.parse(localStorage.getItem("loggedInUser"));
-    if (!user || user.role !== "customer") return;
-    
     const favorites = getFavorites();
     document.querySelectorAll('.favorite-btn').forEach(btn => {
         const bookIndex = parseInt(btn.getAttribute('data-index'));
-        const isFavorited = favorites.includes(bookIndex);
-        
-        btn.textContent = isFavorited ? '❤️ Remove from Favorites' : '🤍 Add to Favorites';
-        btn.classList.toggle('favorited', isFavorited);
-        btn.setAttribute('aria-label', isFavorited ? 'Remove from favorites' : 'Add to favorites');
+        if (favorites.includes(bookIndex)) {
+            btn.textContent = '❤️';
+            btn.classList.add('favorited');
+        } else {
+            btn.textContent = '🤍';
+            btn.classList.remove('favorited');
+        }
     });
 }
 
 // ===========================
 // CONTACT MESSAGES
 // ===========================
-
 function getMessages() {
     return JSON.parse(localStorage.getItem("messages")) || [];
 }
@@ -353,13 +341,15 @@ function deleteBook(index) {
 function editBook(index) {
     const books = getBooks();
     const book = books[index];
+
     document.getElementById("bookTitle").value = book.title;
     document.getElementById("bookAuthor").value = book.author;
     document.getElementById("bookPrice").value = book.price;
     document.getElementById("bookDesc").value = book.desc;
+
     coverPreview.src = book.cover;
+
     editIndex = index;
-    document.getElementById("updatebook").textContent = "Update Book";
 }
 
 // ===========================
@@ -405,25 +395,29 @@ function deleteCustomer(email) {
 // ADMIN - MESSAGES MANAGEMENT
 // ===========================
 const messagesTableBody = document.querySelector("#messagesTable tbody");
+
 function renderMessages() {
     if (!messagesTableBody) return;
     
     const messages = getMessages();
     messagesTableBody.innerHTML = "";
+
     if (messages.length === 0) {
         messagesTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center">No messages yet</td></tr>';
         return;
     }
+
     messages.forEach((msg, index) => {
         const row = document.createElement("tr");
-        // UPDATED: Added timestamp display and better formatting
+
         row.innerHTML = `
-            <td><strong>${msg.name}</strong><br><small>Email: ${msg.email}</small></td>
-            <td>${msg.message}<br><small>Phone: ${msg.phone}<br>Sent: ${msg.date}</small></td>
+            <td>${msg.name}<br><small>${msg.email}</small></td>
+            <td>${msg.message}<br><small>Phone: ${msg.phone}</small></td>
             <td>
                 <button class="admin-delete-btn" onclick="deleteMessage(${index})">Delete</button>
             </td>
         `;
+
         messagesTableBody.appendChild(row);
     });
 }
@@ -450,11 +444,6 @@ if (contactForm) {
         const phone = document.getElementById("phonenumber").value.trim();
         const message = document.getElementById("message").value.trim();
         
-        // ADDED: Basic validation
-        if (!name || !email || !phone || !message) {
-            alert("Please fill in all fields.");
-            return;
-        }
         const messages = getMessages();
         messages.push({
             name,
@@ -491,13 +480,18 @@ function renderProducts() {
         const article = document.createElement("article");
         article.className = "bookCard";
         
+        const avgRating = calculateAverageRating(index);
+        const ratingsCount = getRatings(index).length;
+        const ratingDisplay = ratingsCount > 0 ? `<div style="color: #ffa500; font-size: 14px; margin-top: 5px;">${displayStars(avgRating)} (${ratingsCount})</div>` : '';
+        
         article.innerHTML = `
-            <div class="bookTag">$${book.price}</div>
-            ${user && user.role === "customer" ? `<button class="favorite-btn" data-index="${index}" onclick="toggleFavorite(${index})" aria-label="Add to favorites">🤍 Add to Favorites</button>` : ''}
+            <div class="bookTag">${book.price}</div>
+            ${user && user.role === "customer" ? `<button class="favorite-btn" data-index="${index}" onclick="toggleFavorite(${index})">🤍</button>` : ''}
             <a href="productinfo.html?id=${index}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
             <div class="bookInfo">
                 <h3 class="bookName">${book.title}</h3>
                 <p class="bookAuthor">by ${book.author}</p>
+                ${ratingDisplay}
             </div>
         `;
         
@@ -510,28 +504,261 @@ function renderProducts() {
 }
 
 // ===========================
+// RATINGS & COMMENTS
+// ===========================
+function getRatings(bookId) {
+    return JSON.parse(localStorage.getItem(`ratings_${bookId}`)) || [];
+}
+
+function saveRatings(bookId, ratings) {
+    localStorage.setItem(`ratings_${bookId}`, JSON.stringify(ratings));
+}
+
+function calculateAverageRating(bookId) {
+    const ratings = getRatings(bookId);
+    if (ratings.length === 0) return 0;
+    
+    const sum = ratings.reduce((acc, r) => acc + r.rating, 0);
+    return (sum / ratings.length).toFixed(1);
+}
+
+function displayStars(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStar;
+    
+    let stars = '';
+    for (let i = 0; i < fullStars; i++) stars += '★';
+    if (halfStar) stars += '★';
+    for (let i = 0; i < emptyStars; i++) stars += '☆';
+    
+    return stars;
+}
+
+function submitRating(bookId, rating, comment) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user || user.role !== "customer") {
+        alert("Please login as a customer to rate this book!");
+        return;
+    }
+    
+    const ratings = getRatings(bookId);
+    
+    // Check if user already rated
+    const existingIndex = ratings.findIndex(r => r.userEmail === user.email);
+    
+    const newRating = {
+        userEmail: user.email,
+        userName: user.name,
+        rating: rating,
+        comment: comment,
+        date: new Date().toISOString()
+    };
+    
+    if (existingIndex > -1) {
+        ratings[existingIndex] = newRating;
+        alert("Your rating has been updated!");
+    } else {
+        ratings.push(newRating);
+        alert("Thank you for your rating!");
+    }
+    
+    saveRatings(bookId, ratings);
+    renderProductDetails(); // Refresh the page
+}
+
+function deleteRating(bookId, userEmail) {
+    if (!confirm("Delete this review?")) return;
+    
+    let ratings = getRatings(bookId);
+    ratings = ratings.filter(r => r.userEmail !== userEmail);
+    saveRatings(bookId, ratings);
+    renderProductDetails(); // Refresh
+}
+
+// ===========================
 // PRODUCT DETAILS PAGE
 // ===========================
 function renderProductDetails() {
+    // Check if we're on product details page
+    if (!document.getElementById('productImage')) return;
+    
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('id');
     
+    if (bookId === null) {
+        document.body.innerHTML = '<h1 style="text-align:center; margin-top:100px;">Book not found</h1>';
+        return;
+    }
     
     const books = getBooks();
     const book = books[parseInt(bookId)];
     
+    if (!book) {
+        document.body.innerHTML = '<h1 style="text-align:center; margin-top:100px;">Book not found</h1>';
+        return;
+    }
     
-    const productImg = document.querySelector(".productImg");
-    const productTitle = document.querySelector(".productTitle");
-    const productAuthor = document.querySelector(".productAuthor");
-    const productPrice = document.querySelector(".productPrice");
-    const productDesc = document.querySelector(".productDesc");
+    // Display book info
+    document.getElementById('productImage').src = book.cover || 'images/book1.jpg';
+    document.getElementById('productTitle').textContent = book.title;
+    document.getElementById('productAuthor').textContent = `by ${book.author}`;
+    document.getElementById('productPrice').textContent = `${book.price}`;
+    document.getElementById('productDescription').textContent = book.desc;
     
-    if (productImg) productImg.src = book.cover || 'images/book1.jpg';
-    if (productTitle) productTitle.textContent = book.title;
-    if (productAuthor) productAuthor.textContent = `by ${book.author}`;
-    if (productPrice) productPrice.textContent = `$${book.price}`;
-    if (productDesc) productDesc.textContent = book.desc;
+    // Display average rating
+    const avgRating = calculateAverageRating(bookId);
+    const ratings = getRatings(bookId);
+    document.getElementById('averageStars').textContent = displayStars(avgRating);
+    document.getElementById('ratingText').textContent = `(${ratings.length} ${ratings.length === 1 ? 'rating' : 'ratings'})`;
+    
+    // Render rating form
+    renderRatingForm(bookId);
+    
+    // Render comments
+    renderComments(bookId);
+}
+
+function renderRatingForm(bookId) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    const container = document.getElementById('ratingFormContainer');
+    
+    if (!user || user.role !== "customer") {
+        container.innerHTML = `
+            <div class="login-prompt">
+                <p>Please <a href="login.html">login</a> as a customer to rate this book.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Check if user already rated
+    const ratings = getRatings(bookId);
+    const existingRating = ratings.find(r => r.userEmail === user.email);
+    
+    let selectedRating = existingRating ? existingRating.rating : 0;
+    let existingComment = existingRating ? existingRating.comment : '';
+    
+    container.innerHTML = `
+        <form class="rating-form" id="ratingForm">
+            <div class="rating-input-group">
+                <p style="margin-bottom: 10px; font-weight: 600;">Your Rating:</p>
+                <div class="star-rating" id="starRating">
+                    <span class="star" data-rating="1">★</span>
+                    <span class="star" data-rating="2">★</span>
+                    <span class="star" data-rating="3">★</span>
+                    <span class="star" data-rating="4">★</span>
+                    <span class="star" data-rating="5">★</span>
+                </div>
+            </div>
+            <textarea id="commentText" placeholder="Write your review here..." required>${existingComment}</textarea>
+            <button type="submit" class="submit-rating-btn">${existingRating ? 'Update Review' : 'Submit Review'}</button>
+        </form>
+    `;
+    
+    // Set up star rating
+    const stars = container.querySelectorAll('.star');
+    
+    // Highlight existing rating
+    if (selectedRating > 0) {
+        stars.forEach((star, index) => {
+            if (index < selectedRating) {
+                star.classList.add('active');
+            }
+        });
+    }
+    
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            selectedRating = parseInt(this.getAttribute('data-rating'));
+            stars.forEach((s, index) => {
+                if (index < selectedRating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        });
+        
+        star.addEventListener('mouseenter', function() {
+            const hoverRating = parseInt(this.getAttribute('data-rating'));
+            stars.forEach((s, index) => {
+                if (index < hoverRating) {
+                    s.style.color = '#ffa500';
+                } else {
+                    s.style.color = '#ddd';
+                }
+            });
+        });
+        
+        star.addEventListener('mouseleave', function() {
+            stars.forEach((s, index) => {
+                if (index < selectedRating) {
+                    s.style.color = '#ffa500';
+                } else {
+                    s.style.color = '#ddd';
+                }
+            });
+        });
+    });
+    
+    // Handle form submission
+    document.getElementById('ratingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (selectedRating === 0) {
+            alert("Please select a rating!");
+            return;
+        }
+        
+        const comment = document.getElementById('commentText').value.trim();
+        
+        if (!comment) {
+            alert("Please write a review!");
+            return;
+        }
+        
+        submitRating(bookId, selectedRating, comment);
+    });
+}
+
+function renderComments(bookId) {
+    const ratings = getRatings(bookId);
+    const container = document.getElementById('commentsContainer');
+    const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    
+    if (ratings.length === 0) {
+        container.innerHTML = '<p class="no-comments">No reviews yet. Be the first to review!</p>';
+        return;
+    }
+    
+    // Sort by date (newest first)
+    ratings.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    container.innerHTML = ratings.map(rating => {
+        const date = new Date(rating.date);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        });
+        
+        const canDelete = currentUser && (currentUser.email === rating.userEmail || currentUser.role === 'admin');
+        
+        return `
+            <div class="comment-card">
+                <div class="comment-header">
+                    <div>
+                        <span class="comment-user">${rating.userName}</span>
+                        ${canDelete ? `<button class="delete-comment-btn" onclick="deleteRating('${bookId}', '${rating.userEmail}')">Delete</button>` : ''}
+                    </div>
+                    <span class="comment-rating">${displayStars(rating.rating)}</span>
+                </div>
+                <p class="comment-date">${formattedDate}</p>
+                <p class="comment-text">${rating.comment}</p>
+            </div>
+        `;
+    }).join('');
 }
 
 // ===========================
