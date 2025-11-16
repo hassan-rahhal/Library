@@ -871,4 +871,10 @@ input[type="radio"] {
         font-size: 0.9rem;
         margin-right: 5px;
     }
+    .about-main p{
+      margin-left: 10px;
+    }
+    .registerPage{
+      margin-top: 20%;
+    }
 }
