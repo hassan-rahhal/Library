@@ -83,25 +83,6 @@
         backdrop-filter: blur(10px);
     }
 
-    .admin-avatar {
-        width: 35px;
-        height: 35px;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    .admin-name {
-        color: #fff;
-        font-weight: 500;
-        font-size: 14px;
-    }
-
     .admin-logout-btn {
         background: rgba(255, 255, 255, 0.25);
         color: #fff;
@@ -386,6 +367,11 @@
         .admin-card {
             padding: 20px 15px;
         }
+        .admin-edit-btn,
+        .admin-delete-btn {
+            width: 100%;
+            margin-bottom:5px ;
+        }
     }
 </style>
 </head>
@@ -397,10 +383,6 @@
             <h1>Library Admin Dashboard</h1>
         </div>
         <div class="header-right">
-            <div class="admin-info">
-                <div class="admin-avatar">AD</div>
-                <span class="admin-name">Admin</span>
-            </div>
             <button class="admin-logout-btn">Logout</button>
         </div>
     </div>
