@@ -821,6 +821,12 @@ if (menuToggle && navBar) {
     menuToggle.addEventListener("click", () => {
         navBar.classList.toggle("active");
     });
+    menuToggle.addEventListener('click', () => {
+    navBar.classList.toggle('active');
+    if (document.body.classList.contains('dark-mode')) {
+        navBar.classList.toggle('mobile-dark-mode');
+    }
+});
 }
 
 window.onload = () => {
