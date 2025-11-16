@@ -894,3 +894,36 @@ if (printBtn) {
         printWindow.print();
     });
 }
+const themeToggleBtn = document.getElementById("themeToggleBtn");
+
+window.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+        themeToggleBtn.textContent = "🌙";
+    } else {
+        document.body.classList.remove("dark-mode");
+        themeToggleBtn.textContent = "☀️";
+    }
+});
+
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+            themeToggleBtn.textContent = "🌙";
+        } else {
+            localStorage.setItem("theme", "light");
+            themeToggleBtn.textContent = "☀️";
+        }
+    });
+}
+
+menuToggle.addEventListener('click', () => {
+    navBar.classList.toggle('active');
+
+    if (document.body.classList.contains('dark-mode')) {
+        navBar.classList.toggle('mobile-dark-mode');
+    }
+});
