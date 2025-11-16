@@ -3,10 +3,207 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bookify | Product Details</title>  <!-- Updated title to reflect it's product details, not favorites -->
+  <title>Bookify | Favorites</title>
   <link rel="stylesheet" href="css/index.css">
   <link rel="icon" type="image/png" href="images/icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    .favorites-hero {
+      background: linear-gradient(135deg, #f08a80 0%, #e05649 100%);
+      color: white;
+      padding: 120px 20px 60px;
+      text-align: center;
+    }
+    
+    .favorites-hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 48px;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .favorites-hero p {
+      font-size: 18px;
+      opacity: 0.95;
+    }
+    
+    .favorites-stats {
+      max-width: 1200px;
+      margin: -30px auto 40px;
+      padding: 0 20px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      min-width: 150px;
+    }
+    
+    .stat-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: #f08a80;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      color: #6b6b6b;
+      font-size: 14px;
+    }
+    
+    .favorites-actions {
+      max-width: 1200px;
+      margin: 0 auto 30px;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .clear-all-btn {
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .clear-all-btn:hover {
+      background: #e60000;
+      transform: translateY(-2px);
+    }
+    
+    .sort-options {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .sort-btn {
+      background: white;
+      color: #f08a80;
+      border: 2px solid #f08a80;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+    
+    .sort-btn:hover,
+    .sort-btn.active {
+      background: #f08a80;
+      color: white;
+    }
+    
+    .empty-favorites {
+      max-width: 600px;
+      margin: 80px auto;
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .empty-favorites img {
+      width: 200px;
+      opacity: 0.6;
+      margin-bottom: 30px;
+    }
+    
+    .empty-favorites h2 {
+      color: #222;
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+    
+    .empty-favorites p {
+      color: #6b6b6b;
+      font-size: 16px;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    
+    .browse-btn {
+      display: inline-block;
+      background: #f08a80;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    
+    .browse-btn:hover {
+      background: #e05649;
+      transform: translateY(-2px);
+    }
+    
+    .login-warning {
+      max-width: 600px;
+      margin: 80px auto;
+      text-align: center;
+      padding: 60px 20px;
+      background: #fff3cd;
+      border: 2px solid #f08a80;
+      border-radius: 15px;
+    }
+    
+    .login-warning h2 {
+      color: #856404;
+      margin-bottom: 15px;
+    }
+    
+    .login-warning p {
+      color: #856404;
+      margin-bottom: 20px;
+    }
+    
+    .login-warning a {
+      display: inline-block;
+      background: #f08a80;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    
+    .login-warning a:hover {
+      background: #e05649;
+    }
+    
+    @media (max-width: 768px) {
+      .favorites-hero h1 {
+        font-size: 32px;
+      }
+      
+      .favorites-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .sort-options {
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
 <body>
     <header class="mainHeader">
@@ -32,37 +229,41 @@
             </div>
         </div>
     </header>
-    <main class="productMain">
-        <div class="wrap productLayout">
-            <div class="productImgBox">
-                <img src="images/sample1.jpg" alt="Book cover" class="productImg">
-            </div>
-            <div class="productDetails">
-                <h1 class="productTitle">Blue in the Night</h1>
-                <p class="productAuthor">by John Doe</p>
-                <p class="productPrice">$19.99</p>
-                <p class="productDesc">
-                    A thrilling mystery novel that explores the dark secrets of a small coastal town.
-                    Perfect for readers who love suspense, strong characters, and unexpected twists.
-                </p>
-                <div class="productActions">
-                    <!-- Added favorite button here, only visible for customers -->
-                    <button id="favoriteBtn" class="favorite-btn" style="display: none;" aria-label="Add to favorites">🤍 Add to Favorites</button>
-                    <label for="quantity">Qty:</label>
-                    <input type="number" id="quantity" min="1" value="1" class="quantityInput">
-                    <button class="addToCartBtn">Add to Cart</button>
-                </div>
-                <div class="productMeta">
-                    <p><strong>Genre:</strong> Mystery</p>
-                    <p><strong>Published:</strong> 2021</p>
-                    <p><strong>Rating:</strong> ⭐ 4.5 / 5</p>
-                </div>
+
+    <!-- Hero Section -->
+    <section class="favorites-hero">
+      <h1>My Favorite Books ❤️</h1>
+      <p>Your personal collection of must-read titles</p>
+    </section>
+
+    <!-- Statistics Cards -->
+    <div class="favorites-stats" id="favoritesStats">
+      <!-- Stats will be loaded here -->
+    </div>
+
+    <!-- Actions Bar -->
+    <div class="favorites-actions" id="favoritesActions" style="display: none;">
+      <button class="clear-all-btn" onclick="clearAllFavorites()">🗑️ Clear All Favorites</button>
+      <div class="sort-options">
+        <span style="color: #6b6b6b; font-weight: 600;">Sort by:</span>
+        <button class="sort-btn active" onclick="sortFavorites('recent')">Recent</button>
+        <button class="sort-btn" onclick="sortFavorites('title')">Title</button>
+        <button class="sort-btn" onclick="sortFavorites('rating')">Rating</button>
+      </div>
+    </div>
+
+    <!-- Books Section -->
+    <section class="booksSection">
+        <div class="wrap">
+            <div class="bookList" id="favoriteBooksList">
+                <!-- Favorites will be loaded dynamically -->
             </div>
         </div>
-    </main>
+    </section>
+
     <footer class="mainFooter">
         <p>Bookify. All rights reserved. @ 2025</p>
     </footer>
-    <script src="js/index.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>

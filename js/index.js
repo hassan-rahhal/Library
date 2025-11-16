@@ -25,13 +25,41 @@ function saveBooks(books) {
 function getFavorites() {
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) return [];
-    return JSON.parse(localStorage.getItem(`favorites_${user.email}`)) || [];
+    const favKey = `favorites_${user.email}`;
+    return JSON.parse(localStorage.getItem(favKey)) || [];
 }
 
 function saveFavorites(favorites) {
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) return;
-    localStorage.setItem(`favorites_${user.email}`, JSON.stringify(favorites));
+    const favKey = `favorites_${user.email}`;
+    localStorage.setItem(favKey, JSON.stringify(favorites));
+}
+
+function getFavoriteDetails(bookIndex) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) return null;
+    const favKey = `favorites_details_${user.email}`;
+    const details = JSON.parse(localStorage.getItem(favKey)) || {};
+    return details[bookIndex] || null;
+}
+
+function saveFavoriteDetails(bookIndex, timestamp) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) return;
+    const favKey = `favorites_details_${user.email}`;
+    const details = JSON.parse(localStorage.getItem(favKey)) || {};
+    details[bookIndex] = { addedAt: timestamp };
+    localStorage.setItem(favKey, JSON.stringify(details));
+}
+
+function removeFavoriteDetails(bookIndex) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) return;
+    const favKey = `favorites_details_${user.email}`;
+    const details = JSON.parse(localStorage.getItem(favKey)) || {};
+    delete details[bookIndex];
+    localStorage.setItem(favKey, JSON.stringify(details));
 }
 
 function toggleFavorite(bookIndex) {
@@ -47,14 +75,70 @@ function toggleFavorite(bookIndex) {
     
     if (index > -1) {
         favorites.splice(index, 1);
+        removeFavoriteDetails(bookIndex);
         alert("Removed from favorites!");
     } else {
         favorites.push(bookIndex);
+        saveFavoriteDetails(bookIndex, new Date().toISOString());
         alert("Added to favorites!");
     }
     
     saveFavorites(favorites);
     updateFavoriteButtons();
+    
+    // Refresh favorites page if we're on it
+    if (window.location.pathname.includes('favorite.html')) {
+        renderFavoritesPage();
+    }
+}
+
+function toggleFavoriteFromDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = parseInt(urlParams.get('id'));
+    
+    if (bookId === null || isNaN(bookId)) return;
+    
+    toggleFavorite(bookId);
+    updateFavoriteButtonOnDetails(bookId);
+}
+
+function updateFavoriteButtonOnDetails(bookId) {
+    const favorites = getFavorites();
+    const isFavorited = favorites.includes(bookId);
+    
+    const btn = document.getElementById('favoriteToggleBtn');
+    const icon = document.getElementById('favoriteIcon');
+    const text = document.getElementById('favoriteText');
+    
+    if (!btn) return;
+    
+    if (isFavorited) {
+        btn.classList.add('favorited');
+        icon.textContent = '❤️';
+        text.textContent = 'Remove from Favorites';
+    } else {
+        btn.classList.remove('favorited');
+        icon.textContent = '🤍';
+        text.textContent = 'Add to Favorites';
+    }
+}
+
+function clearAllFavorites() {
+    if (!confirm("Are you sure you want to remove all favorites? This cannot be undone!")) {
+        return;
+    }
+    
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) return;
+    
+    const favKey = `favorites_${user.email}`;
+    const detailsKey = `favorites_details_${user.email}`;
+    
+    localStorage.removeItem(favKey);
+    localStorage.removeItem(detailsKey);
+    
+    alert("All favorites cleared!");
+    renderFavoritesPage();
 }
 
 function updateFavoriteButtons() {
@@ -611,7 +695,15 @@ function renderProductDetails() {
     const ratings = getRatings(bookId);
     document.getElementById('averageStars').textContent = displayStars(avgRating);
     document.getElementById('ratingText').textContent = `(${ratings.length} ${ratings.length === 1 ? 'rating' : 'ratings'})`;
-    
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+const favoriteBtn = document.getElementById('favoriteToggleBtn');
+if (user && user.role === "customer") {
+    favoriteBtn.style.display = 'block';  // Show the button for logged-in customers
+    updateFavoriteButtonOnDetails(bookId);  // Update icon/text based on favorite status
+} else {
+    favoriteBtn.style.display = 'none';  // Hide for non-customers or logged-out users
+}
+
     // Render rating form
     renderRatingForm(bookId);
     
@@ -788,16 +880,21 @@ function renderFavorites() {
         const book = books[bookIndex];
         if (!book) return;
         
+        const avgRating = calculateAverageRating(bookIndex);
+        const ratingsCount = getRatings(bookIndex).length;
+        const ratingDisplay = ratingsCount > 0 ? `<div style="color: #ffa500; font-size: 14px; margin-top: 5px;">${displayStars(avgRating)} (${ratingsCount})</div>` : '';
+        
         const article = document.createElement("article");
         article.className = "bookCard";
         
         article.innerHTML = `
-            <div class="bookTag">$${book.price}</div>
+            <div class="bookTag">${book.price}</div>
             <button class="favorite-btn favorited" data-index="${bookIndex}" onclick="toggleFavorite(${bookIndex})">❤️</button>
             <a href="productinfo.html?id=${bookIndex}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
             <div class="bookInfo">
                 <h3 class="bookName">${book.title}</h3>
                 <p class="bookAuthor">by ${book.author}</p>
+                ${ratingDisplay}
             </div>
         `;
         
@@ -841,13 +938,18 @@ function filterBooks(query) {
         const article = document.createElement("article");
         article.className = "bookCard";
         
+        const avgRating = calculateAverageRating(originalIndex);
+        const ratingsCount = getRatings(originalIndex).length;
+        const ratingDisplay = ratingsCount > 0 ? `<div style="color: #ffa500; font-size: 14px; margin-top: 5px;">${displayStars(avgRating)} (${ratingsCount})</div>` : '';
+        
         article.innerHTML = `
-            <div class="bookTag">$${book.price}</div>
+            <div class="bookTag">${book.price}</div>
             ${user && user.role === "customer" ? `<button class="favorite-btn" data-index="${originalIndex}" onclick="toggleFavorite(${originalIndex})">🤍</button>` : ''}
             <a href="productinfo.html?id=${originalIndex}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
             <div class="bookInfo">
                 <h3 class="bookName">${book.title}</h3>
                 <p class="bookAuthor">by ${book.author}</p>
+                ${ratingDisplay}
             </div>
         `;
         

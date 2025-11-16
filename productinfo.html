@@ -326,7 +326,12 @@
             <p class="product-price-text" id="productPrice">$0.00</p>
             <p class="product-description-text" id="productDescription">Loading description...</p>
             
-            <a href="products.html" class="back-btn">← Back to Products</a>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+              <a href="products.html" class="back-btn">← Back to Products</a>
+              <button id="favoriteToggleBtn" class="favorite-toggle-btn" onclick="toggleFavoriteFromDetails()" style="display: none;">
+                <span id="favoriteIcon">🤍</span> <span id="favoriteText">Add to Favorites</span>
+              </button>
+            </div>
           </div>
         </div>
 
