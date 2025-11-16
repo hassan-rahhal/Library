@@ -847,9 +847,7 @@ window.addEventListener('storage', (e) => {
         }
     }
 });
-function getBooks() {
-    return JSON.parse(localStorage.getItem("books") || "[]");
-}
+
 document.getElementById("exportCsvBtn").addEventListener("click", () => {
     const books = getBooks();
     if (!books.length) return alert("No books to export!");
