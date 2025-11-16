@@ -834,10 +834,41 @@ input[type="radio"] {
     .bookList {
         grid-template-columns: 1fr;
     }
-    .logoName {
-        display: none;
-    }
     .loginBox {
         padding: 28px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .headerFlex {
+        padding: 12px 20px;
+    }
+
+    .logoBox {
+        font-size: 1.2rem;
+    }
+
+    .navBar {
+        gap: 15px;
+    }
+
+    .navItem {
+        font-size: 0.9rem;
+    }
+
+    .headerBtns {
+        gap: 8px;
+    }
+
+    .btnNav,
+    .logoutBtn {
+        padding: 4px 8px;
+        font-size: 0.70rem;
+    }
+
+    .userDisplay {
+        font-size: 0.9rem;
+        margin-right: 5px;
     }
 }
