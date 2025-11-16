@@ -410,26 +410,26 @@
         <h2>Create New Book</h2>
         <form id="adminBookForm">
             <div>
-                <label for="bookTitle">Book Title</label>
+                <label for="bookTitle">Book Title:</label>
                 <input type="text" id="bookTitle" required placeholder="Enter book title">
             </div>
             <div>
-                <label for="bookAuthor">Author</label>
+                <label for="bookAuthor">Author:</label>
                 <input type="text" id="bookAuthor" required placeholder="Enter author name">
             </div>
             <div>
-                <label for="bookPrice">Price</label>
+                <label for="bookPrice">Price:</label>
                 <input type="number" id="bookPrice" step="0.01" required placeholder="0.00">
             </div>
             <div>
-                <label for="bookCover">Cover Image</label>
+                <label for="bookCover">Cover Image:</label>
                 <input type="file" id="bookCover" accept="image/*">
             </div>
             <div class="cover-preview-container">
                 <img id="adminCoverPreview" src="" alt="Cover Preview">
             </div>
             <div>
-                <label for="bookDesc">Description</label>
+                <label for="bookDesc">Description:</label>
                 <textarea id="bookDesc" rows="4" required placeholder="Enter book description"></textarea>
             </div>
             <button id="updatebook" type="submit">Add Book</button>
