@@ -273,11 +273,11 @@ a {
 }
 
 .favorite-btn.favorited {
-    background: green;
+    background: purple;
 }
 
 .favorite-btn.favorited:hover {
-    background: rgb(3, 238, 3);
+    background:rgb(54, 2, 54);
 }
 
 .bookCover {
@@ -877,4 +877,9 @@ input[type="radio"] {
     .registerPage{
       margin-top: 20%;
     }
-}
+    #superadmin-footer{
+      padding-left: 10px;
+      padding-right: 10p;
+    }
+    }
+

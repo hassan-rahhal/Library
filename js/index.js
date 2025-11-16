@@ -847,3 +847,48 @@ window.addEventListener('storage', (e) => {
         }
     }
 });
+function getBooks() {
+    return JSON.parse(localStorage.getItem("books") || "[]");
+}
+document.getElementById("exportCsvBtn").addEventListener("click", () => {
+    const books = getBooks();
+    if (!books.length) return alert("No books to export!");
+
+    const headers = ["Title", "Author", "Year", "Price", "Tag"];
+    const rows = books.map(book => [book.title, book.author, book.year || "", book.price || "", book.tag || ""]);
+    const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
+
+    const dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "books.csv");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+});
+
+document.getElementById("printBtn").addEventListener("click", () => {
+    const books = getBooks();
+    if (!books.length) return alert("No books to print!");
+
+    let printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write('<html><head><title>Book List</title></head><body>');
+    printWindow.document.write('<h2>Book List</h2>');
+    printWindow.document.write('<table border="1" cellpadding="5" cellspacing="0" style="width:100%;border-collapse: collapse;">');
+    printWindow.document.write('<tr><th>Title</th><th>Author</th><th>Year</th><th>Price</th><th>Tag</th></tr>');
+
+    books.forEach(book => {
+        printWindow.document.write(`<tr>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.year || ''}</td>
+            <td>${book.price || ''}</td>
+            <td>${book.tag || ''}</td>
+        </tr>`);
+    });
+
+    printWindow.document.write('</table>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+});
