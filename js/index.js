@@ -84,11 +84,31 @@ function toggleFavorite(bookIndex) {
     }
     
     saveFavorites(favorites);
-    updateFavoriteButtons();
+    updateFavoriteButtons();  // Updates main page buttons
     
     // Refresh favorites page if we're on it
     if (window.location.pathname.includes('favorite.html')) {
-        renderFavoritesPage();
+        renderFavorites();
+    }
+    
+    // NEW: Refresh product info page button if we're on it
+    if (window.location.pathname.includes('productinfo.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentBookId = parseInt(urlParams.get('id'));
+        if (!isNaN(currentBookId) && currentBookId === bookIndex) {
+            updateFavoriteButtonOnDetails(bookIndex);
+        }
+    }
+    updateFavoriteButtons();  // Updates main page buttons
+    if (window.location.pathname.includes('favorite.html')) {
+        renderFavorites();  // Re-render favorites page with correct text
+    }
+    if (window.location.pathname.includes('productinfo.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentBookId = parseInt(urlParams.get('id'));
+        if (!isNaN(currentBookId) && currentBookId === bookIndex) {
+            updateFavoriteButtonOnDetails(bookIndex);
+        }
     }
 }
 
@@ -100,6 +120,10 @@ function toggleFavoriteFromDetails() {
     
     toggleFavorite(bookId);
     updateFavoriteButtonOnDetails(bookId);
+    
+    // Optional: Refresh favorites page if open in another tab/window (advanced)
+    // This uses postMessage for cross-tab sync, but only if you implement it elsewhere
+    // window.postMessage({ type: 'refreshFavorites' }, '*');
 }
 
 function updateFavoriteButtonOnDetails(bookId) {
@@ -112,13 +136,16 @@ function updateFavoriteButtonOnDetails(bookId) {
     
     if (!btn) return;
     
+    // Add the backBtn class for styling like "Back to Products"
+    btn.classList.add('backBtn');
+    
     if (isFavorited) {
         btn.classList.add('favorited');
-        icon.textContent = '❤️';
+        icon.textContent = '';  // Remove emoji, keep empty
         text.textContent = 'Remove from Favorites';
     } else {
         btn.classList.remove('favorited');
-        icon.textContent = '🤍';
+        icon.textContent = '';  // Remove emoji, keep empty
         text.textContent = 'Add to Favorites';
     }
 }
@@ -145,11 +172,12 @@ function updateFavoriteButtons() {
     const favorites = getFavorites();
     document.querySelectorAll('.favorite-btn').forEach(btn => {
         const bookIndex = parseInt(btn.getAttribute('data-index'));
-        if (favorites.includes(bookIndex)) {
-            btn.textContent = '❤️';
+        const isFavorited = favorites.includes(bookIndex);
+        if (isFavorited) {
+            btn.textContent = 'Remove from Favorites';
             btn.classList.add('favorited');
         } else {
-            btn.textContent = '🤍';
+            btn.textContent = 'Add to Favorites';
             btn.classList.remove('favorited');
         }
     });
@@ -875,7 +903,6 @@ function renderFavorites() {
     }
     
     bookList.innerHTML = "";
-    
     favorites.forEach(bookIndex => {
         const book = books[bookIndex];
         if (!book) return;
@@ -887,9 +914,13 @@ function renderFavorites() {
         const article = document.createElement("article");
         article.className = "bookCard";
         
+        // Updated button: Use text and check favorite status
+        const isFavorited = favorites.includes(bookIndex);  // Always true here, but for consistency
+        const buttonText = isFavorited ? 'Remove from Favorites' : 'Add to Favorites';
+        const buttonClass = isFavorited ? 'favorite-btn favorited' : 'favorite-btn';
         article.innerHTML = `
             <div class="bookTag">${book.price}</div>
-            <button class="favorite-btn favorited" data-index="${bookIndex}" onclick="toggleFavorite(${bookIndex})">❤️</button>
+            <button class="${buttonClass}" data-index="${bookIndex}" onclick="toggleFavorite(${bookIndex})">${buttonText}</button>
             <a href="productinfo.html?id=${bookIndex}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
             <div class="bookInfo">
                 <h3 class="bookName">${book.title}</h3>
@@ -900,8 +931,8 @@ function renderFavorites() {
         
         bookList.appendChild(article);
     });
+    updateFavoriteButtons();
 }
-
 // ===========================
 // SEARCH & FILTER
 // ===========================
@@ -1012,4 +1043,19 @@ window.onload = () => {
     renderProductDetails();
     renderFavorites();
     setupSearch();
+     updateFavoriteButtons();
 };
+window.addEventListener('storage', (e) => {
+    if (e.key && e.key.startsWith('favorites_')) {
+        // Refresh relevant UI
+        updateFavoriteButtons();  // For main page
+        if (window.location.pathname.includes('favorite.html')) {
+            renderFavorites();  // For favorites page
+        }
+        if (window.location.pathname.includes('productinfo.html')) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookId = urlParams.get('id');
+            if (bookId !== null) updateFavoriteButtonOnDetails(bookId);  // For details page
+        }
+    }
+})
