@@ -486,7 +486,7 @@ function renderProducts() {
         const favButtonText = isFavorited ? 'Remove from Favorites' : 'Add to Favorites';
         const favButtonClass = isFavorited ? 'favorite-btn favorited' : 'favorite-btn';
         article.innerHTML = `
-            <div class="bookTag">${book.price}</div>
+            <div class="bookTag">$${book.price}</div>
             ${user && user.role === "customer" ? `<button class="${favButtonClass}" data-index="${index}" onclick="toggleFavorite(${index})">${favButtonText}</button>` : ''}
             <a href="productinfo.html?id=${index}"><img class="bookCover" src="${book.cover || 'images/book1.jpg'}" alt="${book.title}"></a>
             <div class="bookInfo">
@@ -576,7 +576,7 @@ function renderProductDetails() {
     document.getElementById('productImage').src = book.cover || 'images/book1.jpg';
     document.getElementById('productTitle').textContent = book.title;
     document.getElementById('productAuthor').textContent = `by ${book.author}`;
-    document.getElementById('productPrice').textContent = `${book.price}`;
+    document.getElementById('productPrice').textContent = `$${book.price}`;
     document.getElementById('productDescription').textContent = book.desc;
     const avgRating = calculateAverageRating(bookId);
     const ratings = getRatings(bookId);

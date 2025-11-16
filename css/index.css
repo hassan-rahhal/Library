@@ -244,7 +244,7 @@ a {
     position: absolute;
     top: 12px;
     left: 12px;
-    background: #f08a80;
+    background: #ca9d17;
     color: #fff;
     padding: 6px 8px;
     border-radius: 6px;
@@ -256,7 +256,7 @@ a {
     position: absolute;
     top: 12px;
     right: 12px;
-    background: #f08a80;
+    background: #ca9d17;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -269,15 +269,15 @@ a {
 }
 
 .favorite-btn:hover {
-    background: #e0766e;
+    background: #ffc107;
 }
 
 .favorite-btn.favorited {
-    background: #ff6b6b;
+    background: green;
 }
 
 .favorite-btn.favorited:hover {
-    background: #ff5252;
+    background: rgb(3, 238, 3);
 }
 
 .bookCover {
