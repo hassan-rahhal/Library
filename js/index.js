@@ -316,30 +316,28 @@ if (coverInput && coverPreview) {
 let editIndex = null;
 
 if (bookForm) {
-    bookForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const title = document.getElementById("bookTitle").value.trim();
-        const author = document.getElementById("bookAuthor").value.trim();
-        const price = document.getElementById("bookPrice").value.trim();
-        const desc = document.getElementById("bookDesc").value.trim();
-        const cover = coverPreview.src || "";
-        if (!title || !author || !price || !desc) {
-            alert("Please fill all fields");
-            return;
-        }
-        const books = getBooks();
-        const newBook = { title, author, price, desc, cover };
-        if (editIndex === null) {
-            books.push(newBook);
-        } else {
-            books[editIndex] = newBook;
-            editIndex = null;
-        }
-        saveBooks(books);
-        renderBooksTable();
-        bookForm.reset();
-        coverPreview.src = "";
-    });
+    bookForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const books = getBooks();
+    const newBook = {
+        title: document.getElementById("bookTitle").value.trim(),
+        author: document.getElementById("bookAuthor").value.trim(),
+        price: document.getElementById("bookPrice").value.trim(),
+        desc: document.getElementById("bookDesc").value.trim(),
+        cover: coverPreview.src
+    };
+    if (editIndex === null) {
+        books.push(newBook);
+    } else {
+        books[editIndex] = newBook;
+        editIndex = null;
+    }
+    saveBooks(books);
+    renderBooksTable();
+    this.reset();
+    coverPreview.src = "";
+    document.getElementById("updatebook").textContent = "Add Book";
+});
 }
 
 function renderBooksTable() {
@@ -377,6 +375,7 @@ function editBook(index) {
     document.getElementById("bookDesc").value = book.desc;
     coverPreview.src = book.cover;
     editIndex = index;
+    document.getElementById("updatebook").textContent = "Update Book";
 }
 
 function getCustomers() {
