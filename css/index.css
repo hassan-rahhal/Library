@@ -785,6 +785,8 @@ input[type="radio"] {
     }
     .navBar.active {
         display: flex;
+        background: #1a1a1a;
+        color: white;
     }
     .navItem {
         padding: 12px 24px;
@@ -836,6 +838,9 @@ input[type="radio"] {
     .loginBox {
         padding: 28px 20px;
     }
+    footer{
+        font-size: smaller;
+    }
 }
 
 @media (max-width: 600px) {
@@ -871,14 +876,14 @@ input[type="radio"] {
         margin-right: 5px;
     }
     .about-main p{
-      margin-left: 10px;
+        margin-left: 10px;
     }
     .registerPage{
-      margin-top: 20%;
+        margin-top: 20%;
     }
     #superadmin-footer{
-      padding-left: 10px;
-      padding-right: 10p;
+        padding-left: 10px;
+        padding-right: 10p;
     }
     }
 
