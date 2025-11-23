@@ -324,7 +324,8 @@ if (bookForm) {
         author: document.getElementById("bookAuthor").value.trim(),
         price: document.getElementById("bookPrice").value.trim(),
         desc: document.getElementById("bookDesc").value.trim(),
-        cover: coverPreview.src
+        cover: coverPreview.src,
+        createdAt: editIndex === null ? new Date().toISOString() : books[editIndex].createdAt // Preserve original timestamp on edit
     };
     if (editIndex === null) {
         books.push(newBook);
@@ -575,6 +576,10 @@ function renderProductDetails() {
     document.getElementById('productImage').src = book.cover || 'images/book1.jpg';
     document.getElementById('productTitle').textContent = book.title;
     document.getElementById('productAuthor').textContent = `by ${book.author}`;
+    const timestampElement = document.getElementById('productTimestamp');
+    if (timestampElement) {
+        timestampElement.textContent = `Added: ${formatBookDate(book.createdAt)}`;
+    }
     document.getElementById('productPrice').textContent = `$${book.price}`;
     document.getElementById('productDescription').textContent = book.desc;
     const avgRating = calculateAverageRating(bookId);
@@ -933,3 +938,13 @@ menuToggle.addEventListener('click', () => {
         navBar.classList.toggle('mobile-dark-mode');
     }
 });
+
+function formatBookDate(isoString) {
+    if (!isoString) return "Date not available";
+    const date = new Date(isoString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}

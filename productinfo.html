@@ -258,7 +258,17 @@
     .delete-comment-btn:hover {
       background: #e60000;
     }
-    
+
+    .product-timestamp-text {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-style: italic;
+    }
+
+    body.dark-mode .product-timestamp-text {
+        color: #aaa;
+    }
     @media (max-width: 768px) {
       .product-main-info {
         grid-template-columns: 1fr;
@@ -421,22 +431,25 @@
           <div class="product-image-box">
             <img id="productImage" src="images/book1.jpg" alt="Book Cover">
           </div>
-          <div class="product-info-box">
-            <h1 id="productTitle">Loading...</h1>
-            <p class="product-author-text" id="productAuthor">by Author</p>
-            <div class="product-rating-display">
-              <span class="stars" id="averageStars">☆☆☆☆☆</span>
-              <span class="rating-text" id="ratingText">(0 ratings)</span>
-            </div>
-            <p class="product-price-text" id="productPrice">$0.00</p>
-            <p class="product-description-text" id="productDescription">Loading description...</p>
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
-              <a href="products.html" class="back-btn">← Back to Products</a>
-              <button id="favoriteToggleBtn" class="favorite-toggle-btn" onclick="toggleFavoriteFromDetails()" style="display: none;">
-                <span id="favoriteText">Add to Favorites</span>
-              </button>
-            </div>
+        <div class="product-info-box">
+          <h1 id="productTitle">Loading...</h1>
+          <p class="product-author-text" id="productAuthor">by Author</p>
+          <p class="product-timestamp-text" id="productTimestamp" style="color: #999; font-size: 14px; margin-bottom: 15px; font-style: italic;">
+            Added: Loading...
+          </p>
+          <div class="product-rating-display">
+            <span class="stars" id="averageStars">☆☆☆☆☆</span>
+            <span class="rating-text" id="ratingText">(0 ratings)</span>
           </div>
+          <p class="product-price-text" id="productPrice">$0.00</p>
+          <p class="product-description-text" id="productDescription">Loading description...</p>
+          <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+            <a href="products.html" class="back-btn">← Back to Products</a>
+            <button id="favoriteToggleBtn" class="favorite-toggle-btn" onclick="toggleFavoriteFromDetails()" style="display: none;">
+              <span id="favoriteText">Add to Favorites</span>
+            </button>
+          </div>
+        </div>
         </div>
         <div class="rating-section" id="ratingSection">
           <h2>Rate This Book</h2>
