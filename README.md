@@ -24,6 +24,8 @@ A modern, feature-rich digital library and online bookstore built for book lover
 - **Search Functionality**: Real-time search by title or author
 - **Admin Book CRUD**: Create, read, update, and delete books
 - **Image Upload**: Custom book cover uploads with live preview
+- **Confirmation Message**: Display confirmation message before delete actions
+- **Creation date display**: Display the book creation date within the book details page
 
 ### ⭐ **Rating & Review System**
 - **5-Star Rating System**: Interactive star selection
