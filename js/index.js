@@ -863,12 +863,6 @@ if (menuToggle && navBar) {
     menuToggle.addEventListener("click", () => {
         navBar.classList.toggle("active");
     });
-    menuToggle.addEventListener('click', () => {
-    navBar.classList.toggle('active');
-    if (document.body.classList.contains('dark-mode')) {
-        navBar.classList.toggle('mobile-dark-mode');
-    }
-});
 }
 
 window.onload = () => {
@@ -967,14 +961,6 @@ if (themeToggleBtn) {
         }
     });
 }
-
-menuToggle.addEventListener('click', () => {
-    navBar.classList.toggle('active');
-
-    if (document.body.classList.contains('dark-mode')) {
-        navBar.classList.toggle('mobile-dark-mode');
-    }
-});
 
 function formatBookDate(isoString) {
     if (!isoString) return "Date not available";

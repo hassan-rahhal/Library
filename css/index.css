@@ -1030,7 +1030,7 @@ body.dark-mode #themeToggleBtn:hover {
     background: rgba(255, 255, 255, 0.3);
 }
 
-.navBar.mobile-dark-mode {
+.navBar.active {
     display: flex;
     position: absolute;
     top: 100%;
@@ -1038,17 +1038,33 @@ body.dark-mode #themeToggleBtn:hover {
     width: 100%;
     flex-direction: column;
     gap: 0;
-    background-color: #1e1e1e;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    background-color: #fff;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     z-index: 999;
 }
 
-.navBar.mobile-dark-mode .navItem {
-    color: #fff; 
+.navBar.active .navItem {
+    color: #333;
     padding: 12px 24px;
-    border-bottom: 1px solid #333; 
+    border-bottom: 1px solid #eee;
 }
-.navBar.mobile-dark-mode .navItem:hover {
-    background-color: #333;
+
+.navBar.active .navItem:hover {
+    background-color: #f3f4f5;
+    color: #f08a80;
+}
+
+body.dark-mode .navBar.active {
+    background-color: #1e1e1e;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .navBar.active .navItem {
+    color: #fff;
+    border-bottom: 1px solid #333;
+}
+
+body.dark-mode .navBar.active .navItem:hover {
+    background-color: #2a2a2a;
     color: #f08a80;
 }
