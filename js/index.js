@@ -362,9 +362,46 @@ function renderBooksTable() {
 
 function deleteBook(index) {
     const books = getBooks();
-    books.splice(index, 1);
-    saveBooks(books);
-    renderBooksTable();
+    const book = books[index];
+    const confirmMessage = `Are you sure you want to delete this book?\n\nTitle: "${book.title}"\nAuthor: ${book.author}\n\nThis action cannot be undone!`;
+    if (confirm(confirmMessage)) {
+        books.splice(index, 1);
+        saveBooks(books);
+        localStorage.removeItem(`ratings_${index}`);
+        const users = getUsers();
+        users.forEach(user => {
+            if (user.role === "customer") {
+                const favKey = `favorites_${user.email}`;
+                const detailsKey = `favorites_details_${user.email}`;
+                let favorites = JSON.parse(localStorage.getItem(favKey)) || [];
+                let details = JSON.parse(localStorage.getItem(detailsKey)) || {};
+                favorites = favorites.filter(fav => fav !== index);
+                delete details[index];
+                favorites = favorites.map(fav => fav > index ? fav - 1 : fav);
+                const newDetails = {};
+                Object.keys(details).forEach(key => {
+                    const keyNum = parseInt(key);
+                    const newKey = keyNum > index ? keyNum - 1 : keyNum;
+                    newDetails[newKey] = details[key];
+                });
+                localStorage.setItem(favKey, JSON.stringify(favorites));
+                localStorage.setItem(detailsKey, JSON.stringify(newDetails));
+            }
+        });
+        const allKeys = Object.keys(localStorage);
+        allKeys.forEach(key => {
+            if (key.startsWith('ratings_')) {
+                const ratingIndex = parseInt(key.replace('ratings_', ''));
+                if (ratingIndex > index) {
+                    const ratings = localStorage.getItem(key);
+                    localStorage.setItem(`ratings_${ratingIndex - 1}`, ratings);
+                    localStorage.removeItem(key);
+                }
+            }
+        });
+        alert("Book deleted successfully!");
+        renderBooksTable();
+    }
 }
 
 function editBook(index) {
