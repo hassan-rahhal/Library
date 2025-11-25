@@ -130,7 +130,7 @@ A modern, feature-rich digital library and online bookstore built for book lover
 ### Dark Mode
 - System-wide dark theme
 - Persistent across sessions (localStorage)
-- One-click toggle in header
+- One-click toggle in footer
 - Optimized contrast for readability
 
 ### Favorites System
