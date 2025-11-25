@@ -172,7 +172,6 @@ A modern, feature-rich digital library and online bookstore built for book lover
 - localStorage has 5-10MB size limit
 - Data is not shared between different browsers
 - No real-time sync between devices
-- Images stored as base64 (can be large)
 
 
 © 2025 Bookify. All rights reserved.
